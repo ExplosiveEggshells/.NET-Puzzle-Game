@@ -23,18 +23,14 @@ namespace RogersErwin_Assign5
 
         private void SetMainMenuVisibility(bool state)
         {
-            MenuTitlePanel.Enabled = state;
-            MenuTitlePanel.Visible = state;
-            MenuStartPanel.Enabled = state;
-            MenuStartPanel.Visible = state;
+            MenuPanelMaster.Enabled = state;
+            MenuPanelMaster.Visible = state;
         }
 
         private void SetGameVisibility(bool state)
         {
-            GamePanelBoard.Enabled = state;
-            GamePanelBoard.Visible = state;
-            GamePanelDashboard.Enabled = state;
-            GamePanelDashboard.Visible = state;
+            GamePanelMaster.Enabled = state;
+            GamePanelMaster.Visible = state;
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -42,19 +38,52 @@ namespace RogersErwin_Assign5
             SetMainMenuVisibility(false);
             SetGameVisibility(true);
 
-            FillBoard(3);
+            FillBoard(5);
         }
 
         private void FillBoard(int size)
         {
+            size++;
             List<Cell> cells = new List<Cell>();
+            List<SumCell> sumCells = new List<SumCell>();
 
-            for(int i = 0; i < size; i++)
+            int cellSize = GamePanelUserBoard.Width / size;
+
+            for (int i = 0; i < size; i++)
             {
-                Point nextPos = new Point(60 * i, 0);
-                Size ssize = new Size(60, 60);
-                Cell cell = new Cell(nextPos, ssize);
-                GamePanelBoard.Controls.Add(cell.CellPanel);
+                for (int j = 0; j < size; j++)
+                {
+                    Point nextPos = new Point(cellSize * j, cellSize * i);
+                    Size ssize = new Size(cellSize, cellSize);
+
+                    Cell cell;
+                    if (j == size - 1 && i == size - 1)
+                    {
+                        SumCell sumCell = new SumCell(nextPos, ssize, SumType.Diagonal, 0);
+                        cell = sumCell;
+                    }
+                    else if (j == size - 1)
+                    {
+                        SumCell sumCell = new SumCell(nextPos, ssize, SumType.Row, i);
+                        sumCell.Type = SumType.Row;
+                        cell = sumCell;
+                    }
+                    else if (i == size - 1)
+                    {
+                        SumCell sumCell = new SumCell(nextPos, ssize, SumType.Column, j);
+                        sumCell.Type = SumType.Column;
+                        cell = sumCell;
+                    }
+                    else
+                    {
+                        cell = new Cell(nextPos, ssize);
+                    }
+
+                    GamePanelUserBoard.Controls.Add(cell.CellPanel);
+                    cells.Add(cell);
+                }
+
+
             }
         }
     }

@@ -8,10 +8,10 @@ using System.Windows.Forms;
 
 namespace RogersErwin_Assign5
 {
-    class Cell
+    public class Cell
     {
-        private Panel panel;
-        private TextBox textBox;
+        protected Panel panel;
+        protected TextBox textBox;
 
         public Cell(Point pos, Size size)
         {
@@ -25,7 +25,7 @@ namespace RogersErwin_Assign5
             SetDefaultProps();
         }
 
-        private void SetDefaultProps()
+        protected void SetDefaultProps()
         {
             panel.BackColor = Color.NavajoWhite;
             panel.BorderStyle = BorderStyle.FixedSingle;
@@ -41,9 +41,10 @@ namespace RogersErwin_Assign5
             textBox.BackColor = Color.NavajoWhite;
             textBox.ForeColor = Color.Black;
 
-            textBox.Font = new Font("Courier New", 24, FontStyle.Bold, GraphicsUnit.Point);
+            textBox.Font = new Font("Courier New", 14, FontStyle.Bold, GraphicsUnit.Point);
 
             textBox.Text = "0";
+
         }
 
         public Panel CellPanel { get { return panel; } }

@@ -39,10 +39,14 @@
             this.GameButtonPause = new System.Windows.Forms.Button();
             this.GameButtonHint = new System.Windows.Forms.Button();
             this.GameButtonSolve = new System.Windows.Forms.Button();
-            this.GamePanelBoard = new System.Windows.Forms.Panel();
+            this.GamePanelUserBoard = new System.Windows.Forms.Panel();
+            this.GamePanelMaster = new System.Windows.Forms.Panel();
+            this.MenuPanelMaster = new System.Windows.Forms.Panel();
             this.MenuStartPanel.SuspendLayout();
             this.MenuTitlePanel.SuspendLayout();
             this.GamePanelDashboard.SuspendLayout();
+            this.GamePanelMaster.SuspendLayout();
+            this.MenuPanelMaster.SuspendLayout();
             this.SuspendLayout();
             // 
             // MenuStartPanel
@@ -162,12 +166,31 @@
             this.GameButtonSolve.Text = "Solve";
             this.GameButtonSolve.UseVisualStyleBackColor = true;
             // 
-            // GamePanelBoard
+            // GamePanelUserBoard
             // 
-            this.GamePanelBoard.Location = new System.Drawing.Point(0, 99);
-            this.GamePanelBoard.Name = "GamePanelBoard";
-            this.GamePanelBoard.Size = new System.Drawing.Size(788, 662);
-            this.GamePanelBoard.TabIndex = 2;
+            this.GamePanelUserBoard.Location = new System.Drawing.Point(62, 106);
+            this.GamePanelUserBoard.Name = "GamePanelUserBoard";
+            this.GamePanelUserBoard.Size = new System.Drawing.Size(655, 643);
+            this.GamePanelUserBoard.TabIndex = 2;
+            // 
+            // GamePanelMaster
+            // 
+            this.GamePanelMaster.Controls.Add(this.GamePanelDashboard);
+            this.GamePanelMaster.Controls.Add(this.GamePanelUserBoard);
+            this.GamePanelMaster.Location = new System.Drawing.Point(0, 0);
+            this.GamePanelMaster.Name = "GamePanelMaster";
+            this.GamePanelMaster.Size = new System.Drawing.Size(785, 765);
+            this.GamePanelMaster.TabIndex = 2;
+            // 
+            // MenuPanelMaster
+            // 
+            this.MenuPanelMaster.BackColor = System.Drawing.Color.Black;
+            this.MenuPanelMaster.Controls.Add(this.MenuTitlePanel);
+            this.MenuPanelMaster.Controls.Add(this.MenuStartPanel);
+            this.MenuPanelMaster.Location = new System.Drawing.Point(0, 0);
+            this.MenuPanelMaster.Name = "MenuPanelMaster";
+            this.MenuPanelMaster.Size = new System.Drawing.Size(785, 765);
+            this.MenuPanelMaster.TabIndex = 2;
             // 
             // Form1
             // 
@@ -175,10 +198,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(784, 761);
-            this.Controls.Add(this.GamePanelBoard);
-            this.Controls.Add(this.GamePanelDashboard);
-            this.Controls.Add(this.MenuTitlePanel);
-            this.Controls.Add(this.MenuStartPanel);
+            this.Controls.Add(this.GamePanelMaster);
+            this.Controls.Add(this.MenuPanelMaster);
             this.ForeColor = System.Drawing.SystemColors.Control;
             this.Name = "Form1";
             this.Text = ".NET Sudoku";
@@ -187,6 +208,8 @@
             this.MenuTitlePanel.PerformLayout();
             this.GamePanelDashboard.ResumeLayout(false);
             this.GamePanelDashboard.PerformLayout();
+            this.GamePanelMaster.ResumeLayout(false);
+            this.MenuPanelMaster.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -204,7 +227,9 @@
         private System.Windows.Forms.Button GameButtonPause;
         private System.Windows.Forms.Button GameButtonHint;
         private System.Windows.Forms.Button GameButtonSolve;
-        private System.Windows.Forms.Panel GamePanelBoard;
+        private System.Windows.Forms.Panel GamePanelUserBoard;
+        private System.Windows.Forms.Panel GamePanelMaster;
+        private System.Windows.Forms.Panel MenuPanelMaster;
     }
 }
 
