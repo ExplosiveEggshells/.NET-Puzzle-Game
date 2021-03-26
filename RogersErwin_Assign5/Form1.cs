@@ -43,10 +43,11 @@ namespace RogersErwin_Assign5
 
         private void FillBoard(int size)
         {
+            BoardCell[,] boardCells = new BoardCell[size,size];
             size++;
-            List<Cell> cells = new List<Cell>();
-            List<SumCell> sumCells = new List<SumCell>();
-
+            List<SumCell> rowSumCells = new List<SumCell>();
+            List<SumCell> columnSumCells = new List<SumCell>();
+            SumCell diagonalSumCell;
             int cellSize = GamePanelUserBoard.Width / size;
 
             for (int i = 0; i < size; i++)
@@ -54,33 +55,36 @@ namespace RogersErwin_Assign5
                 for (int j = 0; j < size; j++)
                 {
                     Point nextPos = new Point(cellSize * j, cellSize * i);
-                    Size ssize = new Size(cellSize, cellSize);
+                    Size nextSize = new Size(cellSize, cellSize);
 
                     Cell cell;
                     if (j == size - 1 && i == size - 1)
                     {
-                        SumCell sumCell = new SumCell(nextPos, ssize, SumType.Diagonal, 0);
-                        cell = sumCell;
+                        diagonalSumCell = new SumCell(nextPos, nextSize, SumType.Diagonal, 0);
+                        cell = diagonalSumCell;
                     }
                     else if (j == size - 1)
                     {
-                        SumCell sumCell = new SumCell(nextPos, ssize, SumType.Row, i);
+                        SumCell sumCell = new SumCell(nextPos, nextSize, SumType.Row, i);
                         sumCell.Type = SumType.Row;
+                        rowSumCells.Add(sumCell);
                         cell = sumCell;
                     }
                     else if (i == size - 1)
                     {
-                        SumCell sumCell = new SumCell(nextPos, ssize, SumType.Column, j);
+                        SumCell sumCell = new SumCell(nextPos, nextSize, SumType.Column, j);
                         sumCell.Type = SumType.Column;
+                        columnSumCells.Add(sumCell);
                         cell = sumCell;
                     }
                     else
                     {
-                        cell = new Cell(nextPos, ssize);
+                        BoardCell boardCell = new BoardCell(nextPos, nextSize, i, j);
+                        boardCells[i,j] = boardCell;
+                        cell = boardCell;
                     }
 
                     GamePanelUserBoard.Controls.Add(cell.CellPanel);
-                    cells.Add(cell);
                 }
 
 

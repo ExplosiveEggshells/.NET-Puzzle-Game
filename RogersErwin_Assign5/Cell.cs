@@ -31,9 +31,9 @@ namespace RogersErwin_Assign5
             panel.BorderStyle = BorderStyle.FixedSingle;
 
             textBox.Size = panel.Size;
-            textBox.Location = new Point(0, panel.Size.Height / 3);
+            textBox.Location = new Point(0, 0);
             textBox.TextAlign = HorizontalAlignment.Center;
-            
+
             textBox.ReadOnly = true;
             textBox.TabStop = false;
 
@@ -41,10 +41,9 @@ namespace RogersErwin_Assign5
             textBox.BackColor = Color.NavajoWhite;
             textBox.ForeColor = Color.Black;
 
-            textBox.Font = new Font("Courier New", 14, FontStyle.Bold, GraphicsUnit.Point);
+            textBox.Font = new Font("Courier New", panel.Height, FontStyle.Bold, GraphicsUnit.Point);
 
             textBox.Text = "0";
-
         }
 
         public Panel CellPanel { get { return panel; } }
