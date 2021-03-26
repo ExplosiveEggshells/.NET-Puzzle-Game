@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace RogersErwin_Assign5
 {
-    class BoardCell : Cell
+    public class BoardCell : Cell
     {
         private int currentValue;
         private int row;
