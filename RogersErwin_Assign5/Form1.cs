@@ -13,7 +13,13 @@ namespace RogersErwin_Assign5
 {
     public partial class Form1 : Form
     {
+        // TODO: Extract much of this crap out into a GameManager Class
+        BoardCell[,] boardCells;
+        List<SumCell> rowSumCells;
+        List<SumCell> columnSumCells;
+        SumCell diagonalSumCell;
 
+        int gameSize;
         public Form1()
         {
             InitializeComponent();
@@ -43,11 +49,11 @@ namespace RogersErwin_Assign5
 
         private void FillBoard(int size)
         {
-            BoardCell[,] boardCells = new BoardCell[size,size];
+            gameSize = size;
+            boardCells = new BoardCell[size, size];
             size++;
-            List<SumCell> rowSumCells = new List<SumCell>();
-            List<SumCell> columnSumCells = new List<SumCell>();
-            SumCell diagonalSumCell;
+            rowSumCells = new List<SumCell>();
+            columnSumCells = new List<SumCell>();
             int cellSize = GamePanelUserBoard.Width / size;
 
             for (int i = 0; i < size; i++)
@@ -80,14 +86,44 @@ namespace RogersErwin_Assign5
                     else
                     {
                         BoardCell boardCell = new BoardCell(nextPos, nextSize, i, j);
-                        boardCells[i,j] = boardCell;
+                        boardCells[i, j] = boardCell;
+                        boardCell.Value_Changed += UpdateSums;
                         cell = boardCell;
                     }
 
                     GamePanelUserBoard.Controls.Add(cell.CellPanel);
                 }
+            }
 
+        }
 
+        private void UpdateSums(int row, int column)
+        {
+            int rowSum = 0;
+            int columnSum = 0;
+            
+            for (int i = 0; i < gameSize; i++)
+            {
+                rowSum += boardCells[row, i].Value;
+            }
+            
+            for (int i = 0; i < gameSize; i++)
+            {
+                columnSum += boardCells[i, column].Value;
+            }
+
+            rowSumCells[row].CellTextBox.Text = rowSum.ToString();
+            columnSumCells[column].CellTextBox.Text = columnSum.ToString();
+
+            if (row == column)
+            {
+                int diagonalSum = 0;
+                for (int i = 0; i < gameSize; i++)
+                {
+                    diagonalSum += boardCells[i, i].Value;
+                }
+
+                diagonalSumCell.CellTextBox.Text = diagonalSum.ToString();
             }
         }
     }

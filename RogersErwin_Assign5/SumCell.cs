@@ -25,7 +25,11 @@ namespace RogersErwin_Assign5
             sumType = type;
             this.id = id;
             textBox.Text = sumType.ToString() + id.ToString();
+            textBox.Location = new Point(0, 0);
+            textBox.Font = new Font("Courier New", (int)(panel.Height * 0.80), FontStyle.Bold, GraphicsUnit.Pixel);
+            // TODO: Better work on SumCell font scaling
         }
+
 
         public SumType Type { get { return sumType; } set { sumType = value; } }
         public int ID { get { return id; } set { id = value; } }
