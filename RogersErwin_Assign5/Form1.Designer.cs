@@ -42,6 +42,7 @@
             this.GamePanelUserBoard = new System.Windows.Forms.Panel();
             this.GamePanelMaster = new System.Windows.Forms.Panel();
             this.MenuPanelMaster = new System.Windows.Forms.Panel();
+            this.GameButtonSave = new System.Windows.Forms.Button();
             this.MenuStartPanel.SuspendLayout();
             this.MenuTitlePanel.SuspendLayout();
             this.GamePanelDashboard.SuspendLayout();
@@ -101,6 +102,7 @@
             this.GamePanelDashboard.Controls.Add(this.GameTextStage);
             this.GamePanelDashboard.Controls.Add(this.GameTextTime);
             this.GamePanelDashboard.Controls.Add(this.GameButtonReset);
+            this.GamePanelDashboard.Controls.Add(this.GameButtonSave);
             this.GamePanelDashboard.Controls.Add(this.GameButtonPause);
             this.GamePanelDashboard.Controls.Add(this.GameButtonHint);
             this.GamePanelDashboard.Controls.Add(this.GameButtonSolve);
@@ -115,7 +117,7 @@
             this.GameTextStage.Font = new System.Drawing.Font("Candara Light", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GameTextStage.Location = new System.Drawing.Point(256, 23);
             this.GameTextStage.Name = "GameTextStage";
-            this.GameTextStage.Size = new System.Drawing.Size(219, 50);
+            this.GameTextStage.Size = new System.Drawing.Size(155, 50);
             this.GameTextStage.TabIndex = 1;
             this.GameTextStage.Text = "Easy (1)";
             this.GameTextStage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -192,6 +194,15 @@
             this.MenuPanelMaster.Size = new System.Drawing.Size(785, 765);
             this.MenuPanelMaster.TabIndex = 2;
             // 
+            // GameButtonSave
+            // 
+            this.GameButtonSave.Location = new System.Drawing.Point(437, 12);
+            this.GameButtonSave.Name = "GameButtonSave";
+            this.GameButtonSave.Size = new System.Drawing.Size(75, 67);
+            this.GameButtonSave.TabIndex = 0;
+            this.GameButtonSave.Text = "Save";
+            this.GameButtonSave.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -230,6 +241,7 @@
         private System.Windows.Forms.Panel GamePanelUserBoard;
         private System.Windows.Forms.Panel GamePanelMaster;
         private System.Windows.Forms.Panel MenuPanelMaster;
+        private System.Windows.Forms.Button GameButtonSave;
     }
 }
 

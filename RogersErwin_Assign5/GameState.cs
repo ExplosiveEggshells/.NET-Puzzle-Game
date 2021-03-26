@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.IO;
 
 namespace RogersErwin_Assign5
 {
@@ -18,9 +21,12 @@ namespace RogersErwin_Assign5
         private Panel gameBoard;
         private int gameSize;
 
-        public GameState(int gameSize, ref Panel gameBoard)
+        private string stageName;
+
+        public GameState(int gameSize, string stageName, ref Panel gameBoard)
         {
             this.gameSize = gameSize;
+            this.stageName = stageName;
             this.gameBoard = gameBoard;
         }
 
@@ -29,10 +35,47 @@ namespace RogersErwin_Assign5
             FillBoard(gameSize);
         }
 
-        //public string SaveGameState()
-        //{
-        //    string jsonString = JsonSerializer.
-        //}
+        public void SaveState(object sender, EventArgs e)
+        {
+            List<int> values = new List<int>();
+            foreach (BoardCell cell in boardCells)
+            {
+                values.Add(cell.Value);
+            }
+
+            Stage save = new Stage(values, gameSize, stageName);
+            string jsonString = JsonSerializer.Serialize(save);
+
+
+            string path = String.Format("../../saves/{0}.json", stageName);
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            using (StreamWriter saveFile = new StreamWriter(path))
+            {
+                
+                saveFile.Write(jsonString);
+            }
+
+            MessageBox.Show("Saved!");
+        }
+
+        public void LoadState(Stage load)
+        {
+            gameSize = load.gameSize;
+            stageName = load.stageName;
+            FillBoard(gameSize);
+
+            int ptr = 0;
+            for(int i = 0; i < gameSize; i++)
+            {
+                for (int j = 0; j < gameSize; j++, ptr++)
+                {
+                    boardCells[i,j].Value = load.boardValues[ptr];
+                }
+            }
+        }
 
         private void FillBoard(int size)
         {

@@ -8,13 +8,15 @@ namespace RogersErwin_Assign5
 {
     public class Stage
     {
-        public int[,] boardValues;
-        public int gameSize;
+        public List<int> boardValues {get; set; }
+        public int gameSize { get; set;}
+        public string stageName { get; set; }
 
-        public Stage(int[,] boardValues, int gameSize)
+        public Stage(List<int> boardValues, int gameSize, string stageName)
         {
             this.boardValues = boardValues;
             this.gameSize = gameSize;
+            this.stageName = stageName;
         }
     }
 }

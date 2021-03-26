@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 
 namespace RogersErwin_Assign5
 {
@@ -16,7 +20,6 @@ namespace RogersErwin_Assign5
         // TODO: Extract much of this crap out into a GameManager Class
         GameState game;
 
-        int gameSize;
         public Form1()
         {
             InitializeComponent();
@@ -41,8 +44,13 @@ namespace RogersErwin_Assign5
             SetMainMenuVisibility(false);
             SetGameVisibility(true);
 
-            game = new GameState(5, ref GamePanelUserBoard);
-            game.StartGame();
+            game = new GameState(5, "ExampleGame", ref GamePanelUserBoard);
+            GameButtonSave.Click += game.SaveState;
+            using (StreamReader loadFile = new StreamReader("../../saves/ExampleGame.json"))
+            {
+                Stage load = JsonSerializer.Deserialize<Stage>(loadFile.ReadToEnd());
+                game.LoadState(load);
+            }
         }
 
         

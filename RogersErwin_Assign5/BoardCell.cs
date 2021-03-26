@@ -62,6 +62,6 @@ namespace RogersErwin_Assign5
 
         public int Row { get { return row; } }
         public int Column { get { return column; } }
-        public int Value { get { return currentValue; } set { currentValue = value; } }
+        public int Value { get { return currentValue; } set { currentValue = value; textBox.Text = currentValue.ToString(); } }
     }
 }
