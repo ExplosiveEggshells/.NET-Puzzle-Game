@@ -19,12 +19,16 @@ namespace RogersErwin_Assign5
     {
         // TODO: Extract much of this crap out into a GameManager Class
         GameState game;
+        StageManager stageManager;
 
         public Form1()
         {
             InitializeComponent();
             SetMainMenuVisibility(true);
             SetGameVisibility(false);
+
+            stageManager = new StageManager();
+            stageManager.BuildStageLists();
         }
 
         private void SetMainMenuVisibility(bool state)
@@ -44,12 +48,17 @@ namespace RogersErwin_Assign5
             SetMainMenuVisibility(false);
             SetGameVisibility(true);
 
-            game = new GameState(5, "ExampleGame", ref GamePanelUserBoard);
-            GameButtonSave.Click += game.SaveState;
-            using (StreamReader loadFile = new StreamReader("../../saves/ExampleGame.json"))
+            bool exhausted;
+            Stage nextEasy = stageManager.GetNextDifficulty(stageManager.EasyStages, out exhausted);
+            if (!exhausted)
             {
-                Stage load = JsonSerializer.Deserialize<Stage>(loadFile.ReadToEnd());
-                game.LoadState(load);
+                game = new GameState(nextEasy.gameSize, nextEasy.stageName, ref GamePanelUserBoard, ref GameTextStage);
+                game.LoadState(nextEasy);
+
+                GameButtonSave.Click += game.SaveState;
+            } else
+            {
+                MessageBox.Show("You've completed every stage in this difficulty!");
             }
         }
 

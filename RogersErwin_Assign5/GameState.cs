@@ -14,20 +14,28 @@ namespace RogersErwin_Assign5
     public class GameState
     {
         private BoardCell[,] boardCells;
+        private List<Point> lockedCells;
         private SumCell[] rowSumCells;
         private SumCell[] columnSumCells;
         private SumCell diagonalSumCell;
 
+        private List<int> solutionValues;
+        private List<int> correctRowSums;
+        private List<int> correctColumnSums;
+        private int correctDiagonalSum;
+
         private Panel gameBoard;
+        private TextBox stageNameTextBox;
         private int gameSize;
 
         private string stageName;
 
-        public GameState(int gameSize, string stageName, ref Panel gameBoard)
+        public GameState(int gameSize, string stageName, ref Panel gameBoard, ref TextBox stageNameTextBox)
         {
             this.gameSize = gameSize;
             this.stageName = stageName;
             this.gameBoard = gameBoard;
+            this.stageNameTextBox = stageNameTextBox;
         }
 
         public void StartGame()
@@ -43,7 +51,7 @@ namespace RogersErwin_Assign5
                 values.Add(cell.Value);
             }
 
-            Stage save = new Stage(values, gameSize, stageName);
+            Stage save = new Stage(values, solutionValues, lockedCells, gameSize, stageName, correctRowSums, correctColumnSums, correctDiagonalSum, true);
             string jsonString = JsonSerializer.Serialize(save);
 
 
@@ -54,7 +62,6 @@ namespace RogersErwin_Assign5
             }
             using (StreamWriter saveFile = new StreamWriter(path))
             {
-                
                 saveFile.Write(jsonString);
             }
 
@@ -73,6 +80,39 @@ namespace RogersErwin_Assign5
                 for (int j = 0; j < gameSize; j++, ptr++)
                 {
                     boardCells[i,j].Value = load.boardValues[ptr];
+                }
+            }
+
+            stageNameTextBox.Text = stageName;
+            lockedCells = load.lockedCells;
+            correctRowSums = load.correctRowSums;
+            correctColumnSums = load.correctColumnSums;
+            correctDiagonalSum = load.correctDiagonalSum;
+            solutionValues = load.solutionValues;
+
+            for(int i = 0; i < gameSize; i++)
+            {
+                for(int j = 0; j < gameSize; j++)
+                {
+                    UpdateSums(i,j);
+                }
+            }
+
+            DisableLockedCells();
+        }
+
+        private void DisableLockedCells()
+        {
+            foreach (BoardCell cell in boardCells)
+            {
+                Point p = new Point(cell.Row, cell.Column);
+                foreach (Point p2 in lockedCells)
+                {
+                    if (p.X == p2.X && p.Y == p2.Y)
+                    {
+                        cell.CellTextBox.Enabled = false;
+                        cell.CellTextBox.BackColor = Color.White;
+                    }
                 }
             }
         }
@@ -97,6 +137,8 @@ namespace RogersErwin_Assign5
                     if (j == size - 1 && i == size - 1)
                     {
                         diagonalSumCell = new SumCell(nextPos, nextSize, SumType.Diagonal, 0);
+                        diagonalSumCell.CellPanel.BackColor = Color.FromArgb(173, 220, 255);
+                        diagonalSumCell.CellTextBox.BackColor = Color.FromArgb(173, 220, 255);
                         cell = diagonalSumCell;
                     }
                     else if (j == size - 1)
@@ -104,6 +146,8 @@ namespace RogersErwin_Assign5
                         SumCell sumCell = new SumCell(nextPos, nextSize, SumType.Row, i);
                         sumCell.Type = SumType.Row;
                         rowSumCells[i] = sumCell;
+                        sumCell.CellPanel.BackColor = Color.FromArgb(173, 220, 255);
+                        sumCell.CellTextBox.BackColor = Color.FromArgb(173, 220, 255);
                         cell = sumCell;
                     }
                     else if (i == size - 1)
@@ -111,6 +155,8 @@ namespace RogersErwin_Assign5
                         SumCell sumCell = new SumCell(nextPos, nextSize, SumType.Column, j);
                         sumCell.Type = SumType.Column;
                         columnSumCells[j] = sumCell;
+                        sumCell.CellPanel.BackColor = Color.FromArgb(173, 220, 255);
+                        sumCell.CellTextBox.BackColor = Color.FromArgb(173, 220, 255);
                         cell = sumCell;
                     }
                     else
