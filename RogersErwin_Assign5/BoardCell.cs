@@ -13,6 +13,9 @@ namespace RogersErwin_Assign5
         private int currentValue;
         private int row;
         private int column;
+        private BoardCellColorState colorState;
+
+        private bool locked;
         public delegate void BoardCell_ValueChanged(int row, int column);
         
         public BoardCell_ValueChanged Value_Changed;
@@ -25,6 +28,9 @@ namespace RogersErwin_Assign5
             textBox.Location = new Point(0, 0);
             textBox.Font = new Font("Courier New", panel.Height, FontStyle.Bold, GraphicsUnit.Pixel);
 
+            locked = false;
+            colorState = BoardCellColorState.Neutral;
+
             textBox.Enter += TextBox_Enter;
             textBox.Leave += TextBox_Exit;
             textBox.KeyPress += TextBox_KeyPress;
@@ -32,7 +38,7 @@ namespace RogersErwin_Assign5
 
         private void TextBox_Enter(object sender, EventArgs e)
         {
-            textBox.BackColor = Color.DarkGoldenrod;
+            colorState = BoardCellColorState.Selected;
         }
 
         private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -63,5 +69,8 @@ namespace RogersErwin_Assign5
         public int Row { get { return row; } }
         public int Column { get { return column; } }
         public int Value { get { return currentValue; } set { currentValue = value; textBox.Text = currentValue.ToString(); } }
+
+        public bool Locked { get { return locked; } set { locked = value; } }
+        public BoardCellColorState ColorState { get { return colorState; } set { colorState = value; } }
     }
 }

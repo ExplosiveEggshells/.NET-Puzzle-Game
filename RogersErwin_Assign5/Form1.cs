@@ -49,7 +49,7 @@ namespace RogersErwin_Assign5
             SetGameVisibility(true);
 
             bool exhausted;
-            Stage nextEasy = stageManager.GetNextDifficulty(stageManager.EasyStages, out exhausted);
+            Stage nextEasy = stageManager.GetNextDifficulty(stageManager.HardStages, out exhausted);
             if (!exhausted)
             {
                 game = new GameState(nextEasy.gameSize, nextEasy.stageName, ref GamePanelUserBoard, ref GameTextStage);

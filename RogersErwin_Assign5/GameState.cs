@@ -75,11 +75,11 @@ namespace RogersErwin_Assign5
             FillBoard(gameSize);
 
             int ptr = 0;
-            for(int i = 0; i < gameSize; i++)
+            for (int i = 0; i < gameSize; i++)
             {
                 for (int j = 0; j < gameSize; j++, ptr++)
                 {
-                    boardCells[i,j].Value = load.boardValues[ptr];
+                    boardCells[i, j].Value = load.boardValues[ptr];
                 }
             }
 
@@ -90,11 +90,11 @@ namespace RogersErwin_Assign5
             correctDiagonalSum = load.correctDiagonalSum;
             solutionValues = load.solutionValues;
 
-            for(int i = 0; i < gameSize; i++)
+            for (int i = 0; i < gameSize; i++)
             {
-                for(int j = 0; j < gameSize; j++)
+                for (int j = 0; j < gameSize; j++)
                 {
-                    UpdateSums(i,j);
+                    UpdateSums(i, j);
                 }
             }
 
@@ -112,6 +112,8 @@ namespace RogersErwin_Assign5
                     {
                         cell.CellTextBox.Enabled = false;
                         cell.CellTextBox.BackColor = Color.White;
+
+                        cell.Locked = true;
                     }
                 }
             }
@@ -171,38 +173,72 @@ namespace RogersErwin_Assign5
                 }
             }
 
-
         }
 
         private void UpdateSums(int row, int column)
         {
             int rowSum = 0;
+            bool rowComplete = true;
             int columnSum = 0;
+            bool colComplete = true;
 
             for (int i = 0; i < gameSize; i++)
             {
+                if (boardCells[row, i].Value == 0)
+                {
+                    rowComplete = false;
+                }
                 rowSum += boardCells[row, i].Value;
             }
 
             for (int i = 0; i < gameSize; i++)
             {
+                if (boardCells[i, column].Value == 0)
+                {
+                    colComplete = false;
+                }
                 columnSum += boardCells[i, column].Value;
             }
 
             rowSumCells[row].CellTextBox.Text = rowSum.ToString();
             columnSumCells[column].CellTextBox.Text = columnSum.ToString();
 
+            bool diaComplete = true;
+            int diagonalSum = 0;
+
             if (row == column)
             {
-                int diagonalSum = 0;
                 for (int i = 0; i < gameSize; i++)
                 {
+                    if (boardCells[i, i].Value == 0)
+                    {
+                        diaComplete = false;
+                    }
                     diagonalSum += boardCells[i, i].Value;
                 }
 
                 diagonalSumCell.CellTextBox.Text = diagonalSum.ToString();
+                UpdateSumCellColor(diagonalSumCell, diagonalSum, correctDiagonalSum, diaComplete);
             }
+
+            UpdateSumCellColor(rowSumCells[row], rowSum, correctRowSums[row], rowComplete);
+            UpdateSumCellColor(columnSumCells[column], columnSum, correctColumnSums[column], colComplete);
         }
 
+        private void UpdateSumCellColor(SumCell sumCell, int sum, int target, bool setComplete)
+        {
+            if (sum == target)
+            {
+                sumCell.CellTextBox.ForeColor = Color.Green;
+            }
+            else if (sum > target || setComplete)
+            {
+                sumCell.CellTextBox.ForeColor = Color.Red;
+            }
+            else
+            {
+                sumCell.CellTextBox.ForeColor = Color.Black;
+            }
+        }
     }
 }

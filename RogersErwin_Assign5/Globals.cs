@@ -12,4 +12,13 @@ namespace RogersErwin_Assign5
         Medium,
         Hard
     }
+
+    public enum BoardCellColorState
+    {
+        Neutral,
+        Selected,
+        Correct,
+        Wrong,
+        Locked
+    }
 }

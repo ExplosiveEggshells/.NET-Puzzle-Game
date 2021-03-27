@@ -69,22 +69,15 @@ namespace RogersErwin_Assign5
                     }
                     string tag = path.Substring(path.IndexOf("/")+1, 2);
 
-                    for (int i = 0; i < gameSize; i++)
-                    {
-                        for (int j = 0; j < gameSize; j++)
-                        {
-
-                        }
-                    }
-
                     // Get correctRowSums
                     for (int i = 0; i < gameSize; i++)
                     {
                         int rowSum = 0;
                         for (int j = 0; j < gameSize; j++)
                         {
+                            rowSum += solutionValues[(i * gameSize) + j];
+
                             int x = boardValues[(i * gameSize) + j];
-                            rowSum += x;
 
                             if (x != 0)
                             {
@@ -128,7 +121,6 @@ namespace RogersErwin_Assign5
             foreach (Stage stage in stageList)
             {
                 string path = String.Format("../../saves/{0}.json", stage.stageName);
-                MessageBox.Show(path);
                 if (File.Exists(path))
                 {
                     using (StreamReader reader = new StreamReader(path))
