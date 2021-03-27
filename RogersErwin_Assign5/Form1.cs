@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * NAME: Form1.cs
+ * AUTHORS: Jake Rogers (z1826513), John Erwin (z1856469)
+ *
+ * 
+ */
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,8 +23,7 @@ namespace RogersErwin_Assign5
 {
     public partial class Form1 : Form
     {
-        // TODO: Extract much of this crap out into a GameManager Class
-        GameState game;
+        Game game;
         StageManager stageManager;
 
         public Form1()
@@ -31,30 +36,36 @@ namespace RogersErwin_Assign5
             stageManager.BuildStageLists();
         }
 
-        private void SetMainMenuVisibility(bool state)
+        /*
+         * Sets the enabled and visible state of the main menu to state.
+         */
+private void SetMainMenuVisibility(bool state)
         {
             MenuPanelMaster.Enabled = state;
             MenuPanelMaster.Visible = state;
         }
 
+        /*
+         * Same as above, but for the Game menu.
+         */
         private void SetGameVisibility(bool state)
         {
             GamePanelMaster.Enabled = state;
             GamePanelMaster.Visible = state;
         }
 
+        /*
+         * Temporary Function used to start the game. 
+         */
         private void Button1_Click(object sender, EventArgs e)
         {
             SetMainMenuVisibility(false);
             SetGameVisibility(true);
 
-            bool exhausted;
-            Stage nextEasy = stageManager.GetNextDifficulty(stageManager.HardStages, out exhausted);
-            if (!exhausted)
+            Stage nextEasy = stageManager.GetNextDifficulty(stageManager.EasyStages);   // Get the next stage from EasyStages
+            if (nextEasy != null)
             {
-                game = new GameState(nextEasy.gameSize, nextEasy.stageName, ref GamePanelUserBoard, ref GameTextStage);
-                game.LoadState(nextEasy);
-
+                game = new Game(nextEasy, ref GamePanelUserBoard, ref GameTextStage);
                 GameButtonSave.Click += game.SaveState;
             } else
             {

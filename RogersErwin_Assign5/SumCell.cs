@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * NAME: SumCell.cs
+ * AUTHORS: Jake Rogers (z1826513), John Erwin (z1856469)
+ * 
+ * A 'SumCell' inherits from the standard 'Cell' class, but has some
+ * slight differences in properties and colors to make them stand out.
+ */
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -8,30 +15,20 @@ using System.Windows.Forms;
 
 namespace RogersErwin_Assign5
 {
-    public enum SumType
-    {
-        Row,
-        Column,
-        Diagonal
-    }
 
     public class SumCell : Cell
     {
-        private SumType sumType;
-        private int id;
 
-        public SumCell(Point pos, Size size, SumType type, int id) : base(pos, size)
+        public SumCell(Point pos, Size size) : base(pos, size)
         {
-            sumType = type;
-            this.id = id;
-            textBox.Text = sumType.ToString() + id.ToString();
+            textBox.Text = "0";
             textBox.Location = new Point(0, 0);
-            textBox.Font = new Font("Courier New", (int)(panel.Height * 0.80), FontStyle.Bold, GraphicsUnit.Pixel);
+
             // TODO: Better work on SumCell font scaling
+            textBox.Font = new Font("Courier New", (int)(panel.Height * 0.80), FontStyle.Bold, GraphicsUnit.Pixel);
+
+            CellPanel.BackColor = Color.FromArgb(173, 220, 255);
+            CellTextBox.BackColor = Color.FromArgb(173, 220, 255);
         }
-
-
-        public SumType Type { get { return sumType; } set { sumType = value; } }
-        public int ID { get { return id; } set { id = value; } }
     }
 }

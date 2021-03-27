@@ -1,1 +1,0 @@
-{"boardValues":[8,3,5,9,2,4,6,1,7],"solutionValues":[8,3,5,9,2,4,6,1,7],"lockedCells":[{"IsEmpty":false,"X":0,"Y":1},{"IsEmpty":false,"X":1,"Y":0},{"IsEmpty":false,"X":1,"Y":2},{"IsEmpty":false,"X":2,"Y":1}],"gameSize":3,"stageName":"e1","correctRowSums":[16,15,14],"correctColumnSums":[23,6,16],"correctDiagonalSum":17,"modified":true,"completed":false}
