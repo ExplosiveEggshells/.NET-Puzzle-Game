@@ -16,42 +16,53 @@ using System.Drawing;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.IO;
+using System.Timers;
 
 namespace RogersErwin_Assign5
 {
     public class Game
     {
         // Documentation about these game-state properties can be found in Stage.cs.
+
         // Game-State properties
         private BoardCell[,] boardCells;
         private List<Point> lockedCells;
         private SumCell[] rowSumCells;
         private SumCell[] columnSumCells;
         private SumCell diagonalSumCell;
-
         private List<int> solutionValues;
         private List<int> correctRowSums;
         private List<int> correctColumnSums;
         private int correctDiagonalSum;
-        
         private int gameSize;
         private string stageName;
         private double millisecondsElapsed;
-
         private bool completed;
+
+        private Color flashColor = Color.Red;
+        private Color defaultColor = Color.NavajoWhite;
+
+        private System.Timers.Timer flashInterpolationTimer;
+        private List<BoardCell> flashedCells;
+        private int flashMaxTicks = 66;
+        private int flashTickCount = 0;
+        private double flashDuration = 4000;
 
         // References to UI controls.
         private Panel gameBoard;
         private TextBox stageNameTextBox;
+        private Button progressButton;
 
         /*
          * Constructor passes in references to UI elements scoped in Form1.cs, as well
          * as a Stage to load it's initial state from.
          */
-        public Game(Stage stage, ref Panel gameBoard, ref TextBox stageNameTextBox)
+        public Game(Stage stage, ref Panel gameBoard, ref TextBox stageNameTextBox, ref Button ProgressButton)
         {
             this.gameBoard = gameBoard;
             this.stageNameTextBox = stageNameTextBox;
+            this.progressButton = ProgressButton;
+            this.progressButton.Click += CheckProgress;
 
             LoadState(stage);
         }
@@ -130,6 +141,99 @@ namespace RogersErwin_Assign5
             MessageBox.Show("Saved!");
         }
 
+        public void CheckProgress(object sender, EventArgs e)
+        {
+            int counter = 0;
+            int remainingCells = 0;
+            for (int i = 0; i < gameSize; i++)
+            {
+                for (int j = 0; j < gameSize; j++, counter++)
+                {
+                    if (boardCells[i, j].Value != 0)
+                    {
+                        if (boardCells[i, j].Value != solutionValues[counter])
+                        {
+                            FlashCell(i, j);
+                            return;
+                        }
+                    } else
+                    {
+                        remainingCells++;
+                    }
+                }
+            }
+
+            if (remainingCells == 0)
+            {
+                MessageBox.Show("You've completed the puzzle, hit the 'solve' button!");
+            } else
+            {
+                MessageBox.Show("No mistakes found, " + remainingCells + " cells left to fill.");
+            }
+        }
+
+        private void FlashCell(int row, int column)
+        {
+            progressButton.Enabled = false;
+            flashedCells = new List<BoardCell>();
+
+            flashedCells.Add(boardCells[row, column]);
+
+            for (int i = 0; i < gameSize; i++)
+            {
+                if (i == column) { continue; }
+                flashedCells.Add(boardCells[row, i]);
+            }
+
+            for (int i = 0; i < gameSize; i++)
+            {
+                if (i == row) { continue; }
+                flashedCells.Add(boardCells[i, column]);
+            }
+
+            if (row == column)
+            {
+                for (int i = 0; i < gameSize; i++)
+                {
+                    if (i == column) { continue; }
+                    flashedCells.Add(boardCells[i, i]);
+                }
+            }
+
+            flashTickCount = 0;
+            flashInterpolationTimer = new System.Timers.Timer(flashDuration / flashMaxTicks);
+            flashInterpolationTimer.Elapsed += ColorFlashedCells;
+            flashInterpolationTimer.AutoReset = true;
+            flashInterpolationTimer.Start();
+            ColorFlashedCells(null, null);
+        }
+
+        private void ColorFlashedCells(object sender, ElapsedEventArgs e)
+        {
+            double interpolationValue = ((double)flashTickCount / (double)flashMaxTicks);
+            int interpR = flashColor.R + (int)((double)(defaultColor.R - flashColor.R) * interpolationValue);
+            int interpG = flashColor.G + (int)((double)(defaultColor.G - flashColor.G) * interpolationValue);
+            int interpB = flashColor.B + (int)((double)(defaultColor.B - flashColor.B) * interpolationValue);
+            Color nextColor = Color.FromArgb(interpR, interpG, interpB);
+
+            foreach (BoardCell cell in flashedCells)
+            {
+                if (!cell.Locked)
+                {
+                    cell.CellTextBox.BackColor = nextColor;
+                }
+            }
+
+            if (flashTickCount == flashMaxTicks)
+            {
+                flashInterpolationTimer.Close();
+                flashInterpolationTimer.AutoReset = false;
+                progressButton.Enabled = true;
+            }
+
+            flashTickCount++;
+        }
+
         /*
          * Using the List of lockedCells Points constructed in the
          * StageManager class, find their corresponding cells on the BoardCells
@@ -147,7 +251,7 @@ namespace RogersErwin_Assign5
                     {
                         cell.CellTextBox.Enabled = false;
                         cell.CellTextBox.BackColor = Color.White;
-
+                        cell.Locked = true;
                     }
                 }
             }
@@ -164,14 +268,14 @@ namespace RogersErwin_Assign5
             boardCells = new BoardCell[size, size];
             rowSumCells = new SumCell[size];
             columnSumCells = new SumCell[size];
-            
+
             // Size is incremented by one to account for the extra row and column for SumCells.
             size++;
 
             int cellSize = gameBoard.Width / size;  //Size of each cell is (width of the panel / size). The panel *MUST* be 1:1 in order for this to function properly.
 
             Size nextSize = new Size(cellSize, cellSize);                               // Size of the next cell
-            for (int i = 0; i < size; i++)  
+            for (int i = 0; i < size; i++)
             {
                 for (int j = 0; j < size; j++)      // Iterate through [size,size]
                 {

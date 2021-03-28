@@ -65,7 +65,7 @@ namespace RogersErwin_Assign5
             Stage nextEasy = stageManager.GetNextDifficulty(stageManager.EasyStages);   // Get the next stage from EasyStages
             if (nextEasy != null)
             {
-                game = new Game(nextEasy, ref GamePanelUserBoard, ref GameTextStage);
+                game = new Game(nextEasy, ref GamePanelUserBoard, ref GameTextStage, ref GameButtonProgress);
                 GameButtonSave.Click += game.SaveState;
             }
             else
