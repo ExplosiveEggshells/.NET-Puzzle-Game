@@ -39,6 +39,8 @@ namespace RogersErwin_Assign5
         public List<int> correctColumnSums { get; set; }    // Same, but for above going from left to right.
         public int correctDiagonalSum { get; set; }         // Same, but only for the one diagonal sum.
 
+        public double millisecondsElapsed { get; set; }
+
         public bool completed { get; set; }                 // True if this board is solved, or false if in progess.
 
         /*
@@ -50,7 +52,7 @@ namespace RogersErwin_Assign5
         }
 
         public Stage(List<int> boardValues, List<int> solutionValues, List<Point> lockedValues, int gameSize, string stageName,
-            List<int> correctRowSums, List<int> correctColumnSums, int correctDiagonalSum)
+            List<int> correctRowSums, List<int> correctColumnSums, int correctDiagonalSum, double millisecondsElapsed)
         {
             this.boardValues = boardValues;
             this.solutionValues = solutionValues;
@@ -60,6 +62,7 @@ namespace RogersErwin_Assign5
             this.correctRowSums = correctRowSums;
             this.correctColumnSums = correctColumnSums;
             this.correctDiagonalSum = correctDiagonalSum;
+            this.millisecondsElapsed = millisecondsElapsed;
             completed = false;
         }
     }

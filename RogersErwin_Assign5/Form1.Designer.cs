@@ -36,13 +36,13 @@
             this.GameTextStage = new System.Windows.Forms.TextBox();
             this.GameTextTime = new System.Windows.Forms.TextBox();
             this.GameButtonReset = new System.Windows.Forms.Button();
+            this.GameButtonSave = new System.Windows.Forms.Button();
             this.GameButtonPause = new System.Windows.Forms.Button();
             this.GameButtonHint = new System.Windows.Forms.Button();
             this.GameButtonSolve = new System.Windows.Forms.Button();
             this.GamePanelUserBoard = new System.Windows.Forms.Panel();
             this.GamePanelMaster = new System.Windows.Forms.Panel();
             this.MenuPanelMaster = new System.Windows.Forms.Panel();
-            this.GameButtonSave = new System.Windows.Forms.Button();
             this.MenuStartPanel.SuspendLayout();
             this.MenuTitlePanel.SuspendLayout();
             this.GamePanelDashboard.SuspendLayout();
@@ -141,6 +141,15 @@
             this.GameButtonReset.Text = "Reset";
             this.GameButtonReset.UseVisualStyleBackColor = true;
             // 
+            // GameButtonSave
+            // 
+            this.GameButtonSave.Location = new System.Drawing.Point(437, 12);
+            this.GameButtonSave.Name = "GameButtonSave";
+            this.GameButtonSave.Size = new System.Drawing.Size(75, 67);
+            this.GameButtonSave.TabIndex = 0;
+            this.GameButtonSave.Text = "Save";
+            this.GameButtonSave.UseVisualStyleBackColor = true;
+            // 
             // GameButtonPause
             // 
             this.GameButtonPause.Location = new System.Drawing.Point(518, 12);
@@ -172,7 +181,7 @@
             // 
             this.GamePanelUserBoard.Location = new System.Drawing.Point(62, 106);
             this.GamePanelUserBoard.Name = "GamePanelUserBoard";
-            this.GamePanelUserBoard.Size = new System.Drawing.Size(655, 643);
+            this.GamePanelUserBoard.Size = new System.Drawing.Size(643, 643);
             this.GamePanelUserBoard.TabIndex = 2;
             // 
             // GamePanelMaster
@@ -193,15 +202,6 @@
             this.MenuPanelMaster.Name = "MenuPanelMaster";
             this.MenuPanelMaster.Size = new System.Drawing.Size(785, 765);
             this.MenuPanelMaster.TabIndex = 2;
-            // 
-            // GameButtonSave
-            // 
-            this.GameButtonSave.Location = new System.Drawing.Point(437, 12);
-            this.GameButtonSave.Name = "GameButtonSave";
-            this.GameButtonSave.Size = new System.Drawing.Size(75, 67);
-            this.GameButtonSave.TabIndex = 0;
-            this.GameButtonSave.Text = "Save";
-            this.GameButtonSave.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 

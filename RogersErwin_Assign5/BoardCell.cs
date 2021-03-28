@@ -44,15 +44,10 @@ namespace RogersErwin_Assign5
          */
         private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar >= 48 && e.KeyChar <= 57)         // If the key was 0-9...
+            if (e.KeyChar >= 49 && e.KeyChar <= 57)         // If the key was 0-9...
             {
                 textBox.Text = e.KeyChar.ToString();            // Change the value & text of this box to the key.
                 currentValue = int.Parse(e.KeyChar.ToString());
-            }
-            else if (e.KeyChar == 8)                        // If the key was backspace...
-            {
-                textBox.Text = "0";                             // Change the value & text of this box to 0.
-                currentValue = 0;
             }
 
             Value_Changed(row, column);     // Trigger Value_Changed delegate.

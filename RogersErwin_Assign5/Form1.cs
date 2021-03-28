@@ -39,7 +39,7 @@ namespace RogersErwin_Assign5
         /*
          * Sets the enabled and visible state of the main menu to state.
          */
-private void SetMainMenuVisibility(bool state)
+        private void SetMainMenuVisibility(bool state)
         {
             MenuPanelMaster.Enabled = state;
             MenuPanelMaster.Visible = state;
@@ -67,14 +67,15 @@ private void SetMainMenuVisibility(bool state)
             {
                 game = new Game(nextEasy, ref GamePanelUserBoard, ref GameTextStage);
                 GameButtonSave.Click += game.SaveState;
-            } else
+            }
+            else
             {
                 MessageBox.Show("You've completed every stage in this difficulty!");
             }
         }
 
-        
 
-        
+
+
     }
 }

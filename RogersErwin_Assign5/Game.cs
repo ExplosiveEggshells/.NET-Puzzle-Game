@@ -36,6 +36,7 @@ namespace RogersErwin_Assign5
         
         private int gameSize;
         private string stageName;
+        private double millisecondsElapsed;
 
         private bool completed;
 
@@ -86,6 +87,7 @@ namespace RogersErwin_Assign5
             correctColumnSums = load.correctColumnSums;
             correctDiagonalSum = load.correctDiagonalSum;
             solutionValues = load.solutionValues;
+            millisecondsElapsed = load.millisecondsElapsed;
 
             // Call UpdateSums on every cell in the diagonal, essentially intializing all sums.
             for (int i = 0; i < gameSize; i++)
@@ -112,7 +114,7 @@ namespace RogersErwin_Assign5
             }
 
             //Save all data into the Stage object, then serialize it into a json string.
-            Stage save = new Stage(values, solutionValues, lockedCells, gameSize, stageName, correctRowSums, correctColumnSums, correctDiagonalSum);
+            Stage save = new Stage(values, solutionValues, lockedCells, gameSize, stageName, correctRowSums, correctColumnSums, correctDiagonalSum, millisecondsElapsed);
             string jsonString = JsonSerializer.Serialize(save);
 
             string path = String.Format("../../saves/{0}.json", stageName); // Create the path and filename for this save
@@ -168,12 +170,12 @@ namespace RogersErwin_Assign5
 
             int cellSize = gameBoard.Width / size;  //Size of each cell is (width of the panel / size). The panel *MUST* be 1:1 in order for this to function properly.
 
+            Size nextSize = new Size(cellSize, cellSize);                               // Size of the next cell
             for (int i = 0; i < size; i++)  
             {
                 for (int j = 0; j < size; j++)      // Iterate through [size,size]
                 {
                     Point nextPos = new Point(cellSize * j, cellSize * i);                      // Position of the next Cell
-                    Size nextSize = new Size(cellSize, cellSize);                               // Size of the next cell
 
                     Cell cell;                                                                  // Create a cell object that will polymorph into a SumCell or BoardCell.
                     if (j == size - 1 && i == size - 1)                                         // If this cell is both in the sum row and sum column, it is the diagonal SumCell.
