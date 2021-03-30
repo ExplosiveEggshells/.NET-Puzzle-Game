@@ -41,6 +41,7 @@ namespace RogersErwin_Assign5
 
         private Color flashColor = Color.Red;
         private Color defaultColor = Color.NavajoWhite;
+        private Color lockedColor = Color.White;
 
         private System.Timers.Timer flashInterpolationTimer;
         private List<BoardCell> flashedCells;
@@ -141,6 +142,12 @@ namespace RogersErwin_Assign5
             MessageBox.Show("Saved!");
         }
 
+        /*
+         * Called by the 'Progress' button, this will either display a visual
+         * of how many cells need to be filled in still (if all cell the player has
+         * entered are correct thus-far), or call FlashCell on the first
+         * detected mistake (User-entered value != correct value for that slot).
+         */
         public void CheckProgress(object sender, EventArgs e)
         {
             int counter = 0;
@@ -156,7 +163,8 @@ namespace RogersErwin_Assign5
                             FlashCell(i, j);
                             return;
                         }
-                    } else
+                    }
+                    else
                     {
                         remainingCells++;
                     }
@@ -166,7 +174,8 @@ namespace RogersErwin_Assign5
             if (remainingCells == 0)
             {
                 MessageBox.Show("You've completed the puzzle, hit the 'solve' button!");
-            } else
+            }
+            else
             {
                 MessageBox.Show("No mistakes found, " + remainingCells + " cells left to fill.");
             }
@@ -174,7 +183,12 @@ namespace RogersErwin_Assign5
 
         private void FlashCell(int row, int column)
         {
-            progressButton.Enabled = false;
+            if (flashInterpolationTimer != null)
+            {
+                flashInterpolationTimer.Stop();
+                flashInterpolationTimer.Dispose();
+            }
+
             flashedCells = new List<BoardCell>();
 
             flashedCells.Add(boardCells[row, column]);
@@ -211,27 +225,45 @@ namespace RogersErwin_Assign5
         private void ColorFlashedCells(object sender, ElapsedEventArgs e)
         {
             double interpolationValue = ((double)flashTickCount / (double)flashMaxTicks);
-            int interpR = flashColor.R + (int)((double)(defaultColor.R - flashColor.R) * interpolationValue);
-            int interpG = flashColor.G + (int)((double)(defaultColor.G - flashColor.G) * interpolationValue);
-            int interpB = flashColor.B + (int)((double)(defaultColor.B - flashColor.B) * interpolationValue);
-            Color nextColor = Color.FromArgb(interpR, interpG, interpB);
 
             foreach (BoardCell cell in flashedCells)
             {
                 if (!cell.Locked)
                 {
-                    cell.CellTextBox.BackColor = nextColor;
+                    cell.CellTextBox.BackColor = ColorLerp(flashColor, defaultColor, interpolationValue);
+                }
+                else
+                {
+                    cell.CellTextBox.BackColor = ColorLerp(flashColor, lockedColor, interpolationValue);
                 }
             }
 
             if (flashTickCount == flashMaxTicks)
             {
-                flashInterpolationTimer.Close();
                 flashInterpolationTimer.AutoReset = false;
-                progressButton.Enabled = true;
+                flashInterpolationTimer.Close();
+                flashInterpolationTimer.Dispose();
             }
 
             flashTickCount++;
+        }
+
+        /*
+         * returns color n, where n's r, g, and b values are the linear
+         * interpolation of from's rbg's to the rbg values in 'to' by
+         * 'percent' percent.
+         * 
+         * In simpler terms, will return the color 'percent' way between
+         * from and to; ColorLerp(Color.Black, Color.White, 0.50) would
+         * return grey (127, 127, 127)
+         */
+        private Color ColorLerp(Color from, Color to, double percent)
+        {
+            int r = from.R + (int)((double)(to.R - from.R) * percent);
+            int g = from.G + (int)((double)(to.G - from.G) * percent);
+            int b = from.B + (int)((double)(to.B - from.B) * percent);
+
+            return Color.FromArgb(r, g, b);
         }
 
         /*
