@@ -181,9 +181,14 @@ namespace RogersErwin_Assign5
             }
         }
 
+        /*
+         * Given a cell via row and column, 'flash' the row, column, and diagonal (if applicable)
+         * by changing it's backcolor to an alarming color, and then starting a timer that will
+         * slowly fade it back to it's original color.
+         */
         private void FlashCell(int row, int column)
         {
-            if (flashInterpolationTimer != null)
+            if (flashInterpolationTimer != null)    // If there was an interpolation timer in progress, stop it and dispose it.
             {
                 flashInterpolationTimer.Stop();
                 flashInterpolationTimer.Dispose();
@@ -191,21 +196,21 @@ namespace RogersErwin_Assign5
 
             flashedCells = new List<BoardCell>();
 
-            flashedCells.Add(boardCells[row, column]);
+            flashedCells.Add(boardCells[row, column]);  // Add the provided coordinate to the list of cells to be flashed.
 
-            for (int i = 0; i < gameSize; i++)
+            for (int i = 0; i < gameSize; i++)          // For every cell in this row, add it to the list (excluding the originally provided one from method call)
             {
                 if (i == column) { continue; }
                 flashedCells.Add(boardCells[row, i]);
             }
 
-            for (int i = 0; i < gameSize; i++)
+            for (int i = 0; i < gameSize; i++)          // Same as above, but for columns
             {
                 if (i == row) { continue; }
                 flashedCells.Add(boardCells[i, column]);
             }
 
-            if (row == column)
+            if (row == column)                          // If this cell is on the diagonal, add the diagonals to the list.
             {
                 for (int i = 0; i < gameSize; i++)
                 {
@@ -214,30 +219,41 @@ namespace RogersErwin_Assign5
                 }
             }
 
+            // Prepare the timer system for flash animation //
             flashTickCount = 0;
-            flashInterpolationTimer = new System.Timers.Timer(flashDuration / flashMaxTicks);
+            flashInterpolationTimer = new System.Timers.Timer(flashDuration / flashMaxTicks);   // Set a timer to fade the flashed cell's color back to it's original one over time.
             flashInterpolationTimer.Elapsed += ColorFlashedCells;
             flashInterpolationTimer.AutoReset = true;
             flashInterpolationTimer.Start();
-            ColorFlashedCells(null, null);
+            ColorFlashedCells(null, null);                  // Flash the cells right away, making all flashed cells match the flashColor.
         }
 
+        /*
+         * Called by either FlashCell initially or by a Timer created by FlashCell,
+         * this function will fade all currently flashedCells' backgrounds from
+         * flashColor to default/locked color through flashMaxTicks numbers of steps
+         * over a duration of flashDuration milliseconds.
+         */
         private void ColorFlashedCells(object sender, ElapsedEventArgs e)
         {
-            double interpolationValue = ((double)flashTickCount / (double)flashMaxTicks);
+            double interpolationValue = ((double)flashTickCount / (double)flashMaxTicks); // Color bias from flashColor to default/locked color (0.0 is flash color, 0.5 is halfway, 1.0 is default/locked)
+            // Note: the interpolation value will increase further towards 1.0 per every step this function is called by the autoResetting timer, animating the colors back to normal.
 
-            foreach (BoardCell cell in flashedCells)
+            foreach (BoardCell cell in flashedCells)        // For every flashedCell...
             {
-                if (!cell.Locked)
+                if (!cell.Locked)                           // If it isn't locked, Interpolate it's color back to defaultColor
                 {
                     cell.CellTextBox.BackColor = ColorLerp(flashColor, defaultColor, interpolationValue);
                 }
-                else
+                else                                        // Otherwise, animate to lockedColor
                 {
                     cell.CellTextBox.BackColor = ColorLerp(flashColor, lockedColor, interpolationValue);
                 }
             }
 
+            /*
+             * If the tick count has been met, dispose the timer
+             */
             if (flashTickCount == flashMaxTicks)
             {
                 flashInterpolationTimer.AutoReset = false;
@@ -245,7 +261,7 @@ namespace RogersErwin_Assign5
                 flashInterpolationTimer.Dispose();
             }
 
-            flashTickCount++;
+            flashTickCount++;   // Increment the tick count to keep the loop moving and interpolate the colors further.
         }
 
         /*
