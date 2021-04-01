@@ -16,6 +16,8 @@ using System.Drawing;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.IO;
+using System.Diagnostics;
+using System.Timers;
 
 namespace RogersErwin_Assign5
 {
@@ -34,15 +36,21 @@ namespace RogersErwin_Assign5
         private List<int> correctColumnSums;
         private int correctDiagonalSum;
 
+        public Stopwatch gameSW = new Stopwatch();
+        public System.Timers.Timer swRenderTimer;
+        public long trueTime = 0;
+
         private int gameSize;
         private string stageName;
-        private double millisecondsElapsed;
+        private long millisecondsElapsed;
 
         private bool completed;
 
         // References to UI controls.
         private Panel gameBoard;
         private TextBox stageNameTextBox;
+        private TextBox gameTextTime;
+        private Button gameButtonPause;
 
         // Properties
         public string StageName { get { return stageName; } }
@@ -51,10 +59,14 @@ namespace RogersErwin_Assign5
          * Constructor passes in references to UI elements scoped in Form1.cs, as well
          * as a Stage to load it's initial state from.
          */
-        public Game(Stage stage, ref Panel gameBoard, ref TextBox stageNameTextBox)
+        public Game(Stage stage, ref Panel gameBoard, ref TextBox stageNameTextBox, ref TextBox gameTextTime, ref Button gameButtonPause)
         {
             this.gameBoard = gameBoard;
             this.stageNameTextBox = stageNameTextBox;
+            this.gameTextTime = gameTextTime;
+            this.gameButtonPause = gameButtonPause;
+
+            this.gameButtonPause.Click += PauseOrResumeGame;
 
             LoadState(stage);
         }
@@ -91,6 +103,16 @@ namespace RogersErwin_Assign5
             correctDiagonalSum = load.correctDiagonalSum;
             solutionValues = load.solutionValues;
             millisecondsElapsed = load.millisecondsElapsed;
+            trueTime = millisecondsElapsed;
+
+            gameSW.Start();
+            TimerInitializer();
+
+            if (millisecondsElapsed != 0)
+            {
+                gameButtonPause.Text = "Resume";
+                PauseOrResumeGame(gameButtonPause, null);
+            }
 
             // Call UpdateSums on every cell in the diagonal, essentially intializing all sums.
             for (int i = 0; i < gameSize; i++)
@@ -117,7 +139,7 @@ namespace RogersErwin_Assign5
             }
 
             //Save all data into the Stage object, then serialize it into a json string.
-            Stage save = new Stage(values, solutionValues, lockedCells, gameSize, stageName, correctRowSums, correctColumnSums, correctDiagonalSum, millisecondsElapsed);
+            Stage save = new Stage(values, solutionValues, lockedCells, gameSize, stageName, correctRowSums, correctColumnSums, correctDiagonalSum, trueTime);
             string jsonString = JsonSerializer.Serialize(save);
 
             string path = String.Format("../../saves/{0}.json", stageName); // Create the path and filename for this save
@@ -131,6 +153,102 @@ namespace RogersErwin_Assign5
             }
 
             MessageBox.Show("Saved!");
+        }
+
+        /*
+         * Disposes all control elements associated to this
+         * game instance
+         */
+        public void DisposeGame()
+        {
+            for (int i = 0; i < gameSize; i++)
+            {
+                for (int j = 0; j < gameSize; j++)
+                {
+                    boardCells[i, j].Dispose();
+                    boardCells[i, j].Value_Changed -= UpdateSums;
+                    boardCells[i, j] = null;
+                }
+            }
+
+            foreach (SumCell cell in rowSumCells)
+            {
+                cell.Dispose();
+            }
+
+            foreach (SumCell cell in columnSumCells)
+            {
+                cell.Dispose();
+            }
+
+            swRenderTimer.Dispose();
+
+            diagonalSumCell.Dispose();
+        }
+
+        public void PauseGame()
+        {
+            gameButtonPause.Text = "Resume";
+            PauseOrResumeGame(gameButtonPause, null);
+        }
+
+        public void ResumeGame()
+        {
+            gameButtonPause.Text = "Pause";
+            PauseOrResumeGame(gameButtonPause, null);
+        }
+        
+        private void PauseOrResumeGame(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+
+            if (button.Text.Equals("Pause"))
+            {
+                // pause timer
+                gameSW.Stop();
+                SetGamePanelUserBoardVisibility(false);
+                button.Text = "Resume";
+            }
+            else
+            {
+                // resume timer
+                gameSW.Start();
+                SetGamePanelUserBoardVisibility(true);
+                button.Text = "Pause";
+            }
+        }
+
+        private void RenderTimer(object sender, ElapsedEventArgs e)
+        {
+            trueTime = millisecondsElapsed + gameSW.ElapsedMilliseconds;
+            long milliseconds = trueTime % 1000;
+            long seconds = (trueTime / 1000) % 60;
+            long minutes = (trueTime / 60000);
+
+            if (minutes >= 100)
+            {
+                gameTextTime.Text = "SLOW BOY...";
+            }
+            else
+            {
+                gameTextTime.Text = String.Format("{0:00}:{1:00}.{2:000}", minutes, seconds, milliseconds);
+            }
+
+        }
+
+        private void TimerInitializer()
+        {
+            gameSW.Start();
+            swRenderTimer = new System.Timers.Timer(10);
+            swRenderTimer.AutoReset = true;
+            swRenderTimer.Elapsed += RenderTimer; //RenderTimer signiture needs to be modified to work with .Elapsed delegate
+            swRenderTimer.Start();
+        }
+
+        private void SetGamePanelUserBoardVisibility(bool state)
+        {
+            gameBoard.Enabled = state;
+            gameBoard.Visible = state;
         }
 
         /*
@@ -167,14 +285,14 @@ namespace RogersErwin_Assign5
             boardCells = new BoardCell[size, size];
             rowSumCells = new SumCell[size];
             columnSumCells = new SumCell[size];
-            
+
             // Size is incremented by one to account for the extra row and column for SumCells.
             size++;
 
             int cellSize = gameBoard.Width / size;  //Size of each cell is (width of the panel / size). The panel *MUST* be 1:1 in order for this to function properly.
 
             Size nextSize = new Size(cellSize, cellSize);                               // Size of the next cell
-            for (int i = 0; i < size; i++)  
+            for (int i = 0; i < size; i++)
             {
                 for (int j = 0; j < size; j++)      // Iterate through [size,size]
                 {
@@ -295,5 +413,7 @@ namespace RogersErwin_Assign5
                 sumCell.CellTextBox.ForeColor = Color.Black;
             }
         }
+
+        public long MillisecondsElapsed { get { return millisecondsElapsed; } set { millisecondsElapsed = value; } }
     }
 }

@@ -38,6 +38,12 @@ namespace RogersErwin_Assign5
             SetDefaultProps();
         }
 
+        public void Dispose()
+        {
+            textBox.Dispose();
+            panel.Dispose();
+        }
+        
         protected void SetDefaultProps()
         {
             panel.BackColor = Color.NavajoWhite;

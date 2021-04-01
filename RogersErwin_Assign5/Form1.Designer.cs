@@ -67,7 +67,7 @@
             // 
             // MediumDifficultyButton
             // 
-            this.MediumDifficultyButton.Font = new System.Drawing.Font("Intel Clear", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MediumDifficultyButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MediumDifficultyButton.Location = new System.Drawing.Point(288, 70);
             this.MediumDifficultyButton.Name = "MediumDifficultyButton";
             this.MediumDifficultyButton.Size = new System.Drawing.Size(125, 40);
@@ -78,7 +78,7 @@
             // 
             // HardDifficultyButton
             // 
-            this.HardDifficultyButton.Font = new System.Drawing.Font("Intel Clear", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HardDifficultyButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HardDifficultyButton.Location = new System.Drawing.Point(491, 70);
             this.HardDifficultyButton.Name = "HardDifficultyButton";
             this.HardDifficultyButton.Size = new System.Drawing.Size(116, 40);
@@ -89,7 +89,7 @@
             // 
             // EasyDifficultyButton
             // 
-            this.EasyDifficultyButton.Font = new System.Drawing.Font("Intel Clear", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EasyDifficultyButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.EasyDifficultyButton.Location = new System.Drawing.Point(84, 70);
             this.EasyDifficultyButton.Name = "EasyDifficultyButton";
             this.EasyDifficultyButton.Size = new System.Drawing.Size(125, 40);
@@ -151,13 +151,13 @@
             // 
             // GameTextTime
             // 
-            this.GameTextTime.Font = new System.Drawing.Font("Courier New", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GameTextTime.Location = new System.Drawing.Point(599, 29);
+            this.GameTextTime.Font = new System.Drawing.Font("Courier New", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GameTextTime.Location = new System.Drawing.Point(613, 29);
             this.GameTextTime.Name = "GameTextTime";
-            this.GameTextTime.Size = new System.Drawing.Size(173, 38);
+            this.GameTextTime.Size = new System.Drawing.Size(159, 35);
             this.GameTextTime.TabIndex = 1;
-            this.GameTextTime.Text = "00:00:0000";
-            this.GameTextTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.GameTextTime.Text = "00:00.000";
+            this.GameTextTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // GameButtonReset
             // 
@@ -171,7 +171,7 @@
             // 
             // GameButtonSave
             // 
-            this.GameButtonSave.Location = new System.Drawing.Point(437, 12);
+            this.GameButtonSave.Location = new System.Drawing.Point(451, 12);
             this.GameButtonSave.Name = "GameButtonSave";
             this.GameButtonSave.Size = new System.Drawing.Size(75, 67);
             this.GameButtonSave.TabIndex = 0;
@@ -180,13 +180,12 @@
             // 
             // GameButtonPause
             // 
-            this.GameButtonPause.Location = new System.Drawing.Point(518, 12);
+            this.GameButtonPause.Location = new System.Drawing.Point(532, 12);
             this.GameButtonPause.Name = "GameButtonPause";
             this.GameButtonPause.Size = new System.Drawing.Size(75, 67);
             this.GameButtonPause.TabIndex = 0;
             this.GameButtonPause.Text = "Pause";
             this.GameButtonPause.UseVisualStyleBackColor = true;
-            this.GameButtonPause.Click += new System.EventHandler(this.GameButtonPause_click);
             // 
             // GameButtonHint
             // 

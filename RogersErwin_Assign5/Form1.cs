@@ -17,10 +17,6 @@ namespace RogersErwin_Assign5
     {
         Game game;
         StageManager stageManager;
-        static Stopwatch myTimer = new Stopwatch();
-        System.Timers.Timer swRenderTimer;
-
-        public Stopwatch MyTimer { get { return myTimer; } }
 
         public Form1()
         {
@@ -50,17 +46,10 @@ namespace RogersErwin_Assign5
             GamePanelMaster.Visible = state;
         }
 
-        private void SetGamePanelUserBoardVisibility(bool state)
-        {
-            GamePanelUserBoard.Enabled = state;
-            GamePanelUserBoard.Visible = state;
-        }
-
         private void DiffictultyButton_Click(object sender, EventArgs e)
         {
             SetMainMenuVisibility(false);
             SetGameVisibility(true);
-            TimerInitializer();
 
             Button btn = sender as Button;
             GetGameDiffictulyFromButton(ref btn);
@@ -78,7 +67,7 @@ namespace RogersErwin_Assign5
 
             if (nextStage != null)
             {
-                game = new Game(nextStage, ref GamePanelUserBoard, ref GameTextStage);
+                game = new Game(nextStage, ref GamePanelUserBoard, ref GameTextStage, ref GameTextTime, ref GameButtonPause);
                 GameButtonSave.Click += game.SaveState;
             }
             else
@@ -87,45 +76,12 @@ namespace RogersErwin_Assign5
             }
         }
 
-        private void GameButtonPause_click(object sender, EventArgs e)
-        {
-            Button button = sender as Button;
-
-            if (button.Text.Equals("Pause"))
-            {
-                // pause timer
-                MyTimer.Stop();
-                SetGamePanelUserBoardVisibility(false);
-                button.Text = "Resume";
-            }
-            else
-            {
-                // resume timer
-                MyTimer.Start();
-                SetGamePanelUserBoardVisibility(true);
-                button.Text = "Pause";
-            }
-        }
-
-        private void RenderTimer(object sender, ElapsedEventArgs e)
-        {
-            GameTextTime.Text = myTimer.Elapsed.ToString();
-        }
-
-        private void TimerInitializer()
-        {
-            MyTimer.Start();
-            swRenderTimer = new System.Timers.Timer(10);
-            swRenderTimer.AutoReset = true;
-            swRenderTimer.Elapsed += RenderTimer; //RenderTimer signiture needs to be modified to work with .Elapsed delegate
-            swRenderTimer.Start();
-        }
-
         private void ResetGame()
         {
-            MyTimer.Stop();
-            SetGamePanelUserBoardVisibility(false);
-            DialogResult opt = MessageBox.Show("Would you like to reset the game?\nThis will delete any saved games for this difficulty.","", MessageBoxButtons.YesNo);
+            if (game == null) { return; }
+
+            game.PauseGame();
+            DialogResult opt = MessageBox.Show("Would you like to reset the game?\nThis will delete any saved games for this difficulty.", "", MessageBoxButtons.YesNo);
 
             if (opt == DialogResult.Yes)
             {
@@ -151,13 +107,15 @@ namespace RogersErwin_Assign5
                 }
                 if (nextStage != null)
                 {
-                    game = new Game(nextStage, ref GamePanelUserBoard, ref GameTextStage);
+                    game.DisposeGame();
+                    GameButtonSave.Click -= game.SaveState;
+                    game = new Game(nextStage, ref GamePanelUserBoard, ref GameTextStage, ref GameTextTime, ref GameButtonPause);
                     GameButtonSave.Click += game.SaveState;
-                    MyTimer.Restart();
                 }
+            } else
+            {
+                game.ResumeGame();
             }
-            MyTimer.Start();
-            SetGamePanelUserBoardVisibility(true);
         }
 
         private void GameButtonReset_Click(object sender, EventArgs e)
