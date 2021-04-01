@@ -21,6 +21,7 @@ namespace RogersErwin_Assign5
         private int currentValue;   // Value that this cell contributes to it's respective row and column sums.
         private int row;            // Row this cell lies in.
         private int column;         // Column this cell lies in.
+        private bool locked;        // Can this cell's value be changed by the player?
 
         public delegate void BoardCell_ValueChanged(int row, int column);
         public BoardCell_ValueChanged Value_Changed;    // Delegate-action indicating that this Cell's value has changed.
@@ -56,6 +57,7 @@ namespace RogersErwin_Assign5
         public int Row { get { return row; } }
         public int Column { get { return column; } }
         public int Value { get { return currentValue; } set { currentValue = value; textBox.Text = currentValue.ToString(); } }
+        public bool Locked { get { return locked; } set { locked = value; } }
 
     }
 }

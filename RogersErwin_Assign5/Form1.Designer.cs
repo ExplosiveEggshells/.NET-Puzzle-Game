@@ -46,6 +46,7 @@
             this.GamePanelMaster = new System.Windows.Forms.Panel();
             this.MenuPanelMaster = new System.Windows.Forms.Panel();
             this.GamePauseTextBox = new System.Windows.Forms.TextBox();
+            this.GameButtonProgress = new System.Windows.Forms.Button();
             this.MenuStartPanel.SuspendLayout();
             this.MenuTitlePanel.SuspendLayout();
             this.GamePanelDashboard.SuspendLayout();
@@ -130,6 +131,7 @@
             this.GamePanelDashboard.Controls.Add(this.GameTextStage);
             this.GamePanelDashboard.Controls.Add(this.GameTextTime);
             this.GamePanelDashboard.Controls.Add(this.GameButtonReset);
+            this.GamePanelDashboard.Controls.Add(this.GameButtonProgress);
             this.GamePanelDashboard.Controls.Add(this.GameButtonSave);
             this.GamePanelDashboard.Controls.Add(this.GameButtonPause);
             this.GamePanelDashboard.Controls.Add(this.GameButtonHint);
@@ -145,7 +147,7 @@
             this.GameTextStage.Font = new System.Drawing.Font("Candara Light", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GameTextStage.Location = new System.Drawing.Point(256, 23);
             this.GameTextStage.Name = "GameTextStage";
-            this.GameTextStage.Size = new System.Drawing.Size(155, 50);
+            this.GameTextStage.Size = new System.Drawing.Size(79, 50);
             this.GameTextStage.TabIndex = 1;
             this.GameTextStage.Text = "Easy (1)";
             this.GameTextStage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -247,6 +249,14 @@
             this.GamePauseTextBox.TabStop = false;
             this.GamePauseTextBox.Text = "~PAUSED~\r\nNo cheating! ;)";
             this.GamePauseTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // GameButtonProgress
+            // 
+            this.GameButtonProgress.Location = new System.Drawing.Point(356, 13);
+            this.GameButtonProgress.Name = "GameButtonProgress";
+            this.GameButtonProgress.Size = new System.Drawing.Size(75, 67);
+            this.GameButtonProgress.TabIndex = 0;
+            this.GameButtonProgress.Text = "Progress";
+            this.GameButtonProgress.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -291,6 +301,7 @@
         private System.Windows.Forms.Button MediumDifficultyButton;
         private System.Windows.Forms.Button HardDifficultyButton;
         private System.Windows.Forms.TextBox GamePauseTextBox;
+        private System.Windows.Forms.Button GameButtonProgress;
     }
 }
 

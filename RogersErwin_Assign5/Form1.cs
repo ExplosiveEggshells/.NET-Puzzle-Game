@@ -67,7 +67,7 @@ namespace RogersErwin_Assign5
 
             if (nextStage != null)
             {
-                game = new Game(nextStage, ref GamePanelUserBoard, ref GameTextStage, ref GameTextTime, ref GameButtonPause);
+                game = new Game(nextStage, ref GamePanelUserBoard, ref GameTextStage, ref GameTextTime, ref GameButtonPause, ref GameButtonProgress);
                 GameButtonSave.Click += game.SaveState;
             }
             else
@@ -110,7 +110,7 @@ namespace RogersErwin_Assign5
                 {
                     game.DisposeGame();
                     GameButtonSave.Click -= game.SaveState;
-                    game = new Game(nextStage, ref GamePanelUserBoard, ref GameTextStage, ref GameTextTime, ref GameButtonPause);
+                    game = new Game(nextStage, ref GamePanelUserBoard, ref GameTextStage, ref GameTextTime, ref GameButtonPause, ref GameButtonProgress);
                     GameButtonSave.Click += game.SaveState;
                 }
             } else
