@@ -149,7 +149,7 @@ namespace RogersErwin_Assign5
                     }
 
                     // Now that all variables have been assigned, create a new stage object.
-                    Stage nextStage = new Stage(boardValues, solutionValues, lockedCells, gameSize, tag, correctRowSums, correctColumnSums, correctDiagonalSum, 0);
+                    Stage nextStage = new Stage(boardValues, solutionValues, lockedCells, gameSize, tag, correctRowSums, correctColumnSums, correctDiagonalSum, 0, false, false);
                     
                     // Finally, add thie newly created stage object to it's appropiate list.
                     if (gameSize == 3) { EasyStages.Add(nextStage); }

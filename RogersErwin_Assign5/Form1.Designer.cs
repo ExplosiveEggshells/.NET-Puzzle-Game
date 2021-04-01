@@ -155,7 +155,7 @@
             // GameTextTime
             // 
             this.GameTextTime.Font = new System.Drawing.Font("Courier New", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GameTextTime.Location = new System.Drawing.Point(623, 29);
+            this.GameTextTime.Location = new System.Drawing.Point(613, 29);
             this.GameTextTime.Name = "GameTextTime";
             this.GameTextTime.Size = new System.Drawing.Size(159, 35);
             this.GameTextTime.TabIndex = 1;

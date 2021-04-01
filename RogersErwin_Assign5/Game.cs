@@ -48,6 +48,7 @@ namespace RogersErwin_Assign5
         private long millisecondsElapsed;
 
         private bool completed;
+        private bool hasCheated;
 
         private Color flashColor = Color.Red;
         private Color defaultColor = Color.NavajoWhite;
@@ -153,7 +154,7 @@ namespace RogersErwin_Assign5
             }
 
             //Save all data into the Stage object, then serialize it into a json string.
-            Stage save = new Stage(values, solutionValues, lockedCells, gameSize, stageName, correctRowSums, correctColumnSums, correctDiagonalSum, trueTime);
+            Stage save = new Stage(values, solutionValues, lockedCells, gameSize, stageName, correctRowSums, correctColumnSums, correctDiagonalSum, trueTime, completed, hasCheated);
             string jsonString = JsonSerializer.Serialize(save);
 
             string path = String.Format("../../saves/{0}.json", stageName); // Create the path and filename for this save
@@ -211,6 +212,46 @@ namespace RogersErwin_Assign5
             PauseOrResumeGame(gameButtonPause, null);
         }
         
+        public void AttemptCheat(object sender, EventArgs e)
+        {
+            if (!hasCheated)
+            {
+                DialogResult opt = MessageBox.Show("Are you sure you want to cheat?\nDoing so will invalidate the score on this attempt!", "Cheat Warning", MessageBoxButtons.YesNo);
+                if (opt != DialogResult.Yes)
+                {
+                    return;
+                } else
+                {
+                    hasCheated = true;
+                }
+            }
+
+            Cheat();
+        }
+
+        private void Cheat()
+        {
+            int counter = 0;
+            for (int i = 0; i < gameSize; i++)
+            {
+                for (int j = 0; j < gameSize; j++)
+                {
+                    BoardCell currentCell = boardCells[i,j];
+                    if (currentCell.Value == 0)
+                    {
+                        currentCell.Value = solutionValues[counter];
+                        currentCell.Locked = true;
+                        lockedCells.Add(new Point(i, j));
+                        UpdateSums(i,j);
+                        DisableLockedCells();
+                        return;
+                    }
+                    counter++;
+                }
+            }
+
+        }
+
         private void PauseOrResumeGame(object sender, EventArgs e)
         {
             Button button = sender as Button;
@@ -233,6 +274,11 @@ namespace RogersErwin_Assign5
 
         private void RenderTimer(object sender, ElapsedEventArgs e)
         {
+            if (hasCheated)
+            {
+                gameTextTime.Text = "INVALID...";
+                return;
+            }
             trueTime = millisecondsElapsed + gameSW.ElapsedMilliseconds;
             long milliseconds = trueTime % 1000;
             long seconds = (trueTime / 1000) % 60;

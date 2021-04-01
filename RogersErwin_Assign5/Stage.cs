@@ -42,6 +42,7 @@ namespace RogersErwin_Assign5
         public long millisecondsElapsed { get; set; }
 
         public bool completed { get; set; }                 // True if this board is solved, or false if in progess.
+        public bool hasCheated { get; set; }
 
         /*
          * Default, empty constructor, most likely should not be used.
@@ -52,7 +53,7 @@ namespace RogersErwin_Assign5
         }
 
         public Stage(List<int> boardValues, List<int> solutionValues, List<Point> lockedValues, int gameSize, string stageName,
-            List<int> correctRowSums, List<int> correctColumnSums, int correctDiagonalSum, long millisecondsElapsed)
+            List<int> correctRowSums, List<int> correctColumnSums, int correctDiagonalSum, long millisecondsElapsed, bool completed, bool hasCheated)
         {
             this.boardValues = boardValues;
             this.solutionValues = solutionValues;
@@ -63,7 +64,8 @@ namespace RogersErwin_Assign5
             this.correctColumnSums = correctColumnSums;
             this.correctDiagonalSum = correctDiagonalSum;
             this.millisecondsElapsed = millisecondsElapsed;
-            completed = false;
+            this.completed = completed;
+            this.hasCheated = hasCheated;
         }
     }
 }
