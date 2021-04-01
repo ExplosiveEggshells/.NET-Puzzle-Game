@@ -48,8 +48,8 @@ namespace RogersErwin_Assign5
 
         private void DiffictultyButton_Click(object sender, EventArgs e)
         {
-            SetMainMenuVisibility(false);
-            SetGameVisibility(true);
+            //SetMainMenuVisibility(false);
+            //SetGameVisibility(true);
 
             Button btn = sender as Button;
             GetGameDiffictulyFromButton(ref btn);
@@ -67,8 +67,7 @@ namespace RogersErwin_Assign5
 
             if (nextStage != null)
             {
-                game = new Game(nextStage, ref GamePanelUserBoard, ref GameTextStage, ref GameTextTime, ref GameButtonPause, ref GameButtonProgress);
-                GameButtonSave.Click += game.SaveState;
+                StartNextGame(nextStage);
             }
             else
             {
@@ -108,15 +107,31 @@ namespace RogersErwin_Assign5
                 }
                 if (nextStage != null)
                 {
-                    game.DisposeGame();
-                    GameButtonSave.Click -= game.SaveState;
-                    game = new Game(nextStage, ref GamePanelUserBoard, ref GameTextStage, ref GameTextTime, ref GameButtonPause, ref GameButtonProgress);
-                    GameButtonSave.Click += game.SaveState;
+                    DisposeCurrentGame();
+                    StartNextGame(nextStage);
                 }
             } else
             {
                 game.ResumeGame();
             }
+        }
+
+        private void StartNextGame(Stage stage)
+        {
+            game = new Game(stage, ref GamePanelUserBoard, ref GameTextStage, ref GameTextTime, ref GameButtonPause, ref GameButtonProgress);
+            GameButtonSave.Click += game.SaveState;
+            game.save_finished += DisposeCurrentGame;
+            SetGameVisibility(true);
+            SetMainMenuVisibility(false);
+        }
+
+        private void DisposeCurrentGame()
+        {
+            game.DisposeGame();
+            GameButtonSave.Click -= game.SaveState;
+            game.save_finished -= DisposeCurrentGame;
+            SetGameVisibility(false);
+            SetMainMenuVisibility(true);
         }
 
         private void GameButtonReset_Click(object sender, EventArgs e)

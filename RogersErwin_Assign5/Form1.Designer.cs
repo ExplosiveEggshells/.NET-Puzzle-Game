@@ -38,15 +38,15 @@
             this.GameTextStage = new System.Windows.Forms.TextBox();
             this.GameTextTime = new System.Windows.Forms.TextBox();
             this.GameButtonReset = new System.Windows.Forms.Button();
+            this.GameButtonProgress = new System.Windows.Forms.Button();
             this.GameButtonSave = new System.Windows.Forms.Button();
             this.GameButtonPause = new System.Windows.Forms.Button();
             this.GameButtonHint = new System.Windows.Forms.Button();
             this.GameButtonSolve = new System.Windows.Forms.Button();
             this.GamePanelUserBoard = new System.Windows.Forms.Panel();
             this.GamePanelMaster = new System.Windows.Forms.Panel();
-            this.MenuPanelMaster = new System.Windows.Forms.Panel();
             this.GamePauseTextBox = new System.Windows.Forms.TextBox();
-            this.GameButtonProgress = new System.Windows.Forms.Button();
+            this.MenuPanelMaster = new System.Windows.Forms.Panel();
             this.MenuStartPanel.SuspendLayout();
             this.MenuTitlePanel.SuspendLayout();
             this.GamePanelDashboard.SuspendLayout();
@@ -145,17 +145,17 @@
             // GameTextStage
             // 
             this.GameTextStage.Font = new System.Drawing.Font("Candara Light", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GameTextStage.Location = new System.Drawing.Point(256, 23);
+            this.GameTextStage.Location = new System.Drawing.Point(366, 21);
             this.GameTextStage.Name = "GameTextStage";
-            this.GameTextStage.Size = new System.Drawing.Size(79, 50);
+            this.GameTextStage.Size = new System.Drawing.Size(59, 50);
             this.GameTextStage.TabIndex = 1;
-            this.GameTextStage.Text = "Easy (1)";
+            this.GameTextStage.Text = "e1";
             this.GameTextStage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // GameTextTime
             // 
             this.GameTextTime.Font = new System.Drawing.Font("Courier New", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GameTextTime.Location = new System.Drawing.Point(613, 29);
+            this.GameTextTime.Location = new System.Drawing.Point(623, 29);
             this.GameTextTime.Name = "GameTextTime";
             this.GameTextTime.Size = new System.Drawing.Size(159, 35);
             this.GameTextTime.TabIndex = 1;
@@ -164,49 +164,76 @@
             // 
             // GameButtonReset
             // 
+            this.GameButtonReset.BackColor = System.Drawing.Color.Brown;
+            this.GameButtonReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GameButtonReset.Font = new System.Drawing.Font("Cambria", 14F, System.Drawing.FontStyle.Bold);
             this.GameButtonReset.Location = new System.Drawing.Point(175, 12);
             this.GameButtonReset.Name = "GameButtonReset";
             this.GameButtonReset.Size = new System.Drawing.Size(75, 67);
             this.GameButtonReset.TabIndex = 0;
             this.GameButtonReset.Text = "Reset";
-            this.GameButtonReset.UseVisualStyleBackColor = true;
+            this.GameButtonReset.UseVisualStyleBackColor = false;
             this.GameButtonReset.Click += new System.EventHandler(this.GameButtonReset_Click);
+            // 
+            // GameButtonProgress
+            // 
+            this.GameButtonProgress.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.GameButtonProgress.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GameButtonProgress.Font = new System.Drawing.Font("Cambria", 14F, System.Drawing.FontStyle.Bold);
+            this.GameButtonProgress.Location = new System.Drawing.Point(256, 12);
+            this.GameButtonProgress.Name = "GameButtonProgress";
+            this.GameButtonProgress.Size = new System.Drawing.Size(104, 67);
+            this.GameButtonProgress.TabIndex = 0;
+            this.GameButtonProgress.Text = "Progress";
+            this.GameButtonProgress.UseVisualStyleBackColor = false;
             // 
             // GameButtonSave
             // 
-            this.GameButtonSave.Location = new System.Drawing.Point(451, 12);
+            this.GameButtonSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.GameButtonSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GameButtonSave.Font = new System.Drawing.Font("Cambria", 14F, System.Drawing.FontStyle.Bold);
+            this.GameButtonSave.Location = new System.Drawing.Point(431, 12);
             this.GameButtonSave.Name = "GameButtonSave";
             this.GameButtonSave.Size = new System.Drawing.Size(75, 67);
             this.GameButtonSave.TabIndex = 0;
-            this.GameButtonSave.Text = "Save";
-            this.GameButtonSave.UseVisualStyleBackColor = true;
+            this.GameButtonSave.Text = "Save + Quit";
+            this.GameButtonSave.UseVisualStyleBackColor = false;
             // 
             // GameButtonPause
             // 
-            this.GameButtonPause.Location = new System.Drawing.Point(532, 12);
+            this.GameButtonPause.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.GameButtonPause.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GameButtonPause.Font = new System.Drawing.Font("Cambria", 13.5F, System.Drawing.FontStyle.Bold);
+            this.GameButtonPause.Location = new System.Drawing.Point(512, 12);
             this.GameButtonPause.Name = "GameButtonPause";
-            this.GameButtonPause.Size = new System.Drawing.Size(75, 67);
+            this.GameButtonPause.Size = new System.Drawing.Size(93, 67);
             this.GameButtonPause.TabIndex = 0;
             this.GameButtonPause.Text = "Pause";
-            this.GameButtonPause.UseVisualStyleBackColor = true;
+            this.GameButtonPause.UseVisualStyleBackColor = false;
             // 
             // GameButtonHint
             // 
+            this.GameButtonHint.BackColor = System.Drawing.Color.Violet;
+            this.GameButtonHint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GameButtonHint.Font = new System.Drawing.Font("Cambria", 14F, System.Drawing.FontStyle.Bold);
             this.GameButtonHint.Location = new System.Drawing.Point(94, 13);
             this.GameButtonHint.Name = "GameButtonHint";
             this.GameButtonHint.Size = new System.Drawing.Size(75, 67);
             this.GameButtonHint.TabIndex = 0;
             this.GameButtonHint.Text = "Hint";
-            this.GameButtonHint.UseVisualStyleBackColor = true;
+            this.GameButtonHint.UseVisualStyleBackColor = false;
             // 
             // GameButtonSolve
             // 
+            this.GameButtonSolve.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.GameButtonSolve.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GameButtonSolve.Font = new System.Drawing.Font("Cambria", 14F, System.Drawing.FontStyle.Bold);
             this.GameButtonSolve.Location = new System.Drawing.Point(13, 13);
             this.GameButtonSolve.Name = "GameButtonSolve";
             this.GameButtonSolve.Size = new System.Drawing.Size(75, 67);
             this.GameButtonSolve.TabIndex = 0;
             this.GameButtonSolve.Text = "Solve";
-            this.GameButtonSolve.UseVisualStyleBackColor = true;
+            this.GameButtonSolve.UseVisualStyleBackColor = false;
             // 
             // GamePanelUserBoard
             // 
@@ -225,16 +252,6 @@
             this.GamePanelMaster.Size = new System.Drawing.Size(785, 765);
             this.GamePanelMaster.TabIndex = 2;
             // 
-            // MenuPanelMaster
-            // 
-            this.MenuPanelMaster.BackColor = System.Drawing.Color.Black;
-            this.MenuPanelMaster.Controls.Add(this.MenuTitlePanel);
-            this.MenuPanelMaster.Controls.Add(this.MenuStartPanel);
-            this.MenuPanelMaster.Location = new System.Drawing.Point(0, 0);
-            this.MenuPanelMaster.Name = "MenuPanelMaster";
-            this.MenuPanelMaster.Size = new System.Drawing.Size(785, 765);
-            this.MenuPanelMaster.TabIndex = 2;
-            // 
             // GamePauseTextBox
             // 
             this.GamePauseTextBox.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
@@ -249,14 +266,16 @@
             this.GamePauseTextBox.TabStop = false;
             this.GamePauseTextBox.Text = "~PAUSED~\r\nNo cheating! ;)";
             this.GamePauseTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // GameButtonProgress
             // 
-            this.GameButtonProgress.Location = new System.Drawing.Point(356, 13);
-            this.GameButtonProgress.Name = "GameButtonProgress";
-            this.GameButtonProgress.Size = new System.Drawing.Size(75, 67);
-            this.GameButtonProgress.TabIndex = 0;
-            this.GameButtonProgress.Text = "Progress";
-            this.GameButtonProgress.UseVisualStyleBackColor = true;
+            // MenuPanelMaster
+            // 
+            this.MenuPanelMaster.BackColor = System.Drawing.Color.Black;
+            this.MenuPanelMaster.Controls.Add(this.MenuTitlePanel);
+            this.MenuPanelMaster.Controls.Add(this.MenuStartPanel);
+            this.MenuPanelMaster.Location = new System.Drawing.Point(0, 0);
+            this.MenuPanelMaster.Name = "MenuPanelMaster";
+            this.MenuPanelMaster.Size = new System.Drawing.Size(785, 765);
+            this.MenuPanelMaster.TabIndex = 2;
             // 
             // Form1
             // 

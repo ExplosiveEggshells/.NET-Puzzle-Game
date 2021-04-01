@@ -36,9 +36,12 @@ namespace RogersErwin_Assign5
         private List<int> correctColumnSums;
         private int correctDiagonalSum;
 
+        public delegate void Save_Finished();
+        public Save_Finished save_finished;
         public Stopwatch gameSW = new Stopwatch();
         public System.Timers.Timer swRenderTimer;
         public long trueTime = 0;
+        
 
         private int gameSize;
         private string stageName;
@@ -52,9 +55,9 @@ namespace RogersErwin_Assign5
 
         private System.Timers.Timer flashInterpolationTimer;
         private List<BoardCell> flashedCells;
-        private int flashMaxTicks = 66;
+        private int flashMaxTicks = 33;
         private int flashTickCount = 0;
-        private double flashDuration = 4000;
+        private double flashDuration = 1500;
 
         // References to UI controls.
         private Button gameButtonProgress;
@@ -136,6 +139,12 @@ namespace RogersErwin_Assign5
          */
         public void SaveState(object sender, EventArgs e)
         {
+            PauseGame();
+            DialogResult opt = MessageBox.Show("Are you sure you want to save and quit?", "Save & Quit", MessageBoxButtons.YesNo);
+            if (opt != DialogResult.Yes) {
+                ResumeGame();
+                return;
+            }
             // Pack the 2D boardCells array into a 1D-Representation of the sudoku board (Json-friendly).
             List<int> values = new List<int>();
             foreach (BoardCell cell in boardCells)
@@ -157,7 +166,7 @@ namespace RogersErwin_Assign5
                 saveFile.Write(jsonString);
             }
 
-            MessageBox.Show("Saved!");
+            save_finished();
         }
 
         /*
@@ -176,17 +185,15 @@ namespace RogersErwin_Assign5
                     boardCells[i, j] = null;
                 }
             }
-
             foreach (SumCell cell in rowSumCells)
             {
                 cell.Dispose();
             }
-
             foreach (SumCell cell in columnSumCells)
             {
                 cell.Dispose();
             }
-
+            gameButtonProgress.Click -= CheckProgress;
             gameButtonPause.Click -= PauseOrResumeGame;
             swRenderTimer.Dispose();
             diagonalSumCell.Dispose();
@@ -233,7 +240,7 @@ namespace RogersErwin_Assign5
 
             if (minutes >= 100)
             {
-                gameTextTime.Text = "SLOW BOY...";
+                gameTextTime.Text = "SLOW BOI...";
             }
             else
             {
@@ -303,6 +310,8 @@ namespace RogersErwin_Assign5
          */
         private void FlashCell(int row, int column)
         {
+            gameButtonProgress.Enabled = false;
+
             if (flashInterpolationTimer != null)    // If there was an interpolation timer in progress, stop it and dispose it.
             {
                 flashInterpolationTimer.Stop();
@@ -371,6 +380,7 @@ namespace RogersErwin_Assign5
              */
             if (flashTickCount == flashMaxTicks)
             {
+                gameButtonProgress.Enabled = true;
                 flashInterpolationTimer.AutoReset = false;
                 flashInterpolationTimer.Close();
                 flashInterpolationTimer.Dispose();
