@@ -52,8 +52,6 @@ namespace RogersErwin_Assign5
         private TextBox gameTextTime;
         private Button gameButtonPause;
 
-        // Properties
-        public string StageName { get { return stageName; } }
 
         /*
          * Constructor passes in references to UI elements scoped in Form1.cs, as well
@@ -107,12 +105,7 @@ namespace RogersErwin_Assign5
 
             gameSW.Start();
             TimerInitializer();
-
-            if (millisecondsElapsed != 0)
-            {
-                gameButtonPause.Text = "Resume";
-                PauseOrResumeGame(gameButtonPause, null);
-            }
+            PauseGame();
 
             // Call UpdateSums on every cell in the diagonal, essentially intializing all sums.
             for (int i = 0; i < gameSize; i++)
@@ -181,8 +174,8 @@ namespace RogersErwin_Assign5
                 cell.Dispose();
             }
 
+            gameButtonPause.Click -= PauseOrResumeGame;
             swRenderTimer.Dispose();
-
             diagonalSumCell.Dispose();
         }
 
@@ -414,6 +407,8 @@ namespace RogersErwin_Assign5
             }
         }
 
+        // Properties
+        public string StageName { get { return stageName; } }
         public long MillisecondsElapsed { get { return millisecondsElapsed; } set { millisecondsElapsed = value; } }
     }
 }

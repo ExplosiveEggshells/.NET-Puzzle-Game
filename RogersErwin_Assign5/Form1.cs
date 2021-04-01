@@ -80,12 +80,13 @@ namespace RogersErwin_Assign5
         {
             if (game == null) { return; }
 
-            game.ResumeGame();
+            game.PauseGame();
             DialogResult opt = MessageBox.Show("Would you like to reset the game?\nThis will delete any saved games for this difficulty.", "", MessageBoxButtons.YesNo);
 
             if (opt == DialogResult.Yes)
             {
-                string path = string.Format("../../saves/{0}.json", GameTextStage.Text);
+                game.ResumeGame();
+                string path = string.Format("../../saves/{0}.json", game.StageName);
 
                 if (File.Exists(path)) File.Delete(path); // If a save with the same tag already exists, overwrite it.                
 
@@ -114,7 +115,7 @@ namespace RogersErwin_Assign5
                 }
             } else
             {
-                game.PauseGame();
+                game.ResumeGame();
             }
         }
 
