@@ -45,6 +45,7 @@
             this.GamePanelUserBoard = new System.Windows.Forms.Panel();
             this.GamePanelMaster = new System.Windows.Forms.Panel();
             this.MenuPanelMaster = new System.Windows.Forms.Panel();
+            this.GamePauseTextBox = new System.Windows.Forms.TextBox();
             this.MenuStartPanel.SuspendLayout();
             this.MenuTitlePanel.SuspendLayout();
             this.GamePanelDashboard.SuspendLayout();
@@ -216,6 +217,7 @@
             // 
             this.GamePanelMaster.Controls.Add(this.GamePanelDashboard);
             this.GamePanelMaster.Controls.Add(this.GamePanelUserBoard);
+            this.GamePanelMaster.Controls.Add(this.GamePauseTextBox);
             this.GamePanelMaster.Location = new System.Drawing.Point(0, 0);
             this.GamePanelMaster.Name = "GamePanelMaster";
             this.GamePanelMaster.Size = new System.Drawing.Size(785, 765);
@@ -230,6 +232,21 @@
             this.MenuPanelMaster.Name = "MenuPanelMaster";
             this.MenuPanelMaster.Size = new System.Drawing.Size(785, 765);
             this.MenuPanelMaster.TabIndex = 2;
+            // 
+            // GamePauseTextBox
+            // 
+            this.GamePauseTextBox.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.GamePauseTextBox.Enabled = false;
+            this.GamePauseTextBox.Font = new System.Drawing.Font("Cambria", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GamePauseTextBox.ForeColor = System.Drawing.SystemColors.Menu;
+            this.GamePauseTextBox.Location = new System.Drawing.Point(65, 294);
+            this.GamePauseTextBox.Multiline = true;
+            this.GamePauseTextBox.Name = "GamePauseTextBox";
+            this.GamePauseTextBox.Size = new System.Drawing.Size(640, 177);
+            this.GamePauseTextBox.TabIndex = 0;
+            this.GamePauseTextBox.TabStop = false;
+            this.GamePauseTextBox.Text = "~PAUSED~\r\nNo cheating! ;)";
+            this.GamePauseTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // Form1
             // 
@@ -248,6 +265,7 @@
             this.GamePanelDashboard.ResumeLayout(false);
             this.GamePanelDashboard.PerformLayout();
             this.GamePanelMaster.ResumeLayout(false);
+            this.GamePanelMaster.PerformLayout();
             this.MenuPanelMaster.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -272,6 +290,7 @@
         private System.Windows.Forms.Button EasyDifficultyButton;
         private System.Windows.Forms.Button MediumDifficultyButton;
         private System.Windows.Forms.Button HardDifficultyButton;
+        private System.Windows.Forms.TextBox GamePauseTextBox;
     }
 }
 

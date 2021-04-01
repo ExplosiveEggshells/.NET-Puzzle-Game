@@ -186,13 +186,13 @@ namespace RogersErwin_Assign5
             diagonalSumCell.Dispose();
         }
 
-        public void PauseGame()
+        public void ResumeGame()
         {
             gameButtonPause.Text = "Resume";
             PauseOrResumeGame(gameButtonPause, null);
         }
 
-        public void ResumeGame()
+        public void PauseGame()
         {
             gameButtonPause.Text = "Pause";
             PauseOrResumeGame(gameButtonPause, null);

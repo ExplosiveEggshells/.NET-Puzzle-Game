@@ -80,7 +80,7 @@ namespace RogersErwin_Assign5
         {
             if (game == null) { return; }
 
-            game.PauseGame();
+            game.ResumeGame();
             DialogResult opt = MessageBox.Show("Would you like to reset the game?\nThis will delete any saved games for this difficulty.", "", MessageBoxButtons.YesNo);
 
             if (opt == DialogResult.Yes)
@@ -114,7 +114,7 @@ namespace RogersErwin_Assign5
                 }
             } else
             {
-                game.ResumeGame();
+                game.PauseGame();
             }
         }
 
