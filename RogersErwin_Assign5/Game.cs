@@ -92,9 +92,7 @@ namespace RogersErwin_Assign5
         public void LoadState(Stage load)
         {
             gameSize = load.gameSize;
-            completed = false;      // In the context of this assignment, completed games should never be loaded, so it's safe to assume that a game being loaded is in-progress.
             FillBoard(gameSize);
-
 
             /*
              * Translate the 1D board into values at the appropriate spot in the boardCells array.
@@ -117,6 +115,8 @@ namespace RogersErwin_Assign5
             correctDiagonalSum = load.correctDiagonalSum;
             solutionValues = load.solutionValues;
             millisecondsElapsed = load.millisecondsElapsed;
+            completed = false;      // In the context of this assignment, completed games should never be loaded, so it's safe to assume that a game being loaded is in-progress.
+            hasCheated = load.hasCheated;
             trueTime = millisecondsElapsed;
 
             gameSW.Start();
@@ -229,29 +229,6 @@ namespace RogersErwin_Assign5
             Cheat();
         }
 
-        private void Cheat()
-        {
-            int counter = 0;
-            for (int i = 0; i < gameSize; i++)
-            {
-                for (int j = 0; j < gameSize; j++)
-                {
-                    BoardCell currentCell = boardCells[i,j];
-                    if (currentCell.Value == 0)
-                    {
-                        currentCell.Value = solutionValues[counter];
-                        currentCell.Locked = true;
-                        lockedCells.Add(new Point(i, j));
-                        UpdateSums(i,j);
-                        DisableLockedCells();
-                        return;
-                    }
-                    counter++;
-                }
-            }
-
-        }
-
         private void PauseOrResumeGame(object sender, EventArgs e)
         {
             Button button = sender as Button;
@@ -291,6 +268,48 @@ namespace RogersErwin_Assign5
             else
             {
                 gameTextTime.Text = String.Format("{0:00}:{1:00}.{2:000}", minutes, seconds, milliseconds);
+            }
+
+        }
+
+        private void Cheat()
+        {
+            int counter = 0;
+            List<BoardCell> unfilledCell = new List<BoardCell>();
+            foreach (BoardCell cell in boardCells)
+            {
+                if (cell.Value == 0)
+                {
+                    unfilledCell.Add(cell);
+                }
+            }
+
+            if (unfilledCell.Count != 0)
+            {
+                Random random = new Random();
+                int rdm = random.Next(0, unfilledCell.Count);
+                
+                BoardCell rdmCell = unfilledCell[rdm];
+                int solutionPos = (rdmCell.Row * gameSize) + rdmCell.Column;
+
+                rdmCell.Value = solutionValues[solutionPos];
+                UpdateSums(rdmCell.Row, rdmCell.Column);
+                return;
+            }
+
+            for (int i = 0; i < gameSize; i++)
+            {
+                for (int j = 0; j < gameSize; j++)
+                {
+                    BoardCell currentCell = boardCells[i,j];
+                    if (currentCell.Value != solutionValues[counter])
+                    {
+                        currentCell.Value = solutionValues[counter];
+                        UpdateSums(i,j);
+                        return;
+                    }
+                    counter++;
+                }
             }
 
         }

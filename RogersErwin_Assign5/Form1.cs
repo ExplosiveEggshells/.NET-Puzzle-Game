@@ -84,7 +84,6 @@ namespace RogersErwin_Assign5
 
             if (opt == DialogResult.Yes)
             {
-                game.ResumeGame();
                 string path = string.Format("../../saves/{0}.json", game.StageName);
 
                 if (File.Exists(path)) File.Delete(path); // If a save with the same tag already exists, overwrite it.                
@@ -109,6 +108,7 @@ namespace RogersErwin_Assign5
                 {
                     DisposeCurrentGame();
                     StartNextGame(nextStage);
+                    
                 }
             } else
             {
