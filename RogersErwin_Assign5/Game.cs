@@ -33,7 +33,7 @@ namespace RogersErwin_Assign5
         private List<int> correctRowSums;
         private List<int> correctColumnSums;
         private int correctDiagonalSum;
-        
+
         private int gameSize;
         private string stageName;
         private double millisecondsElapsed;
@@ -43,6 +43,9 @@ namespace RogersErwin_Assign5
         // References to UI controls.
         private Panel gameBoard;
         private TextBox stageNameTextBox;
+
+        // Properties
+        public string StageName { get { return stageName; } }
 
         /*
          * Constructor passes in references to UI elements scoped in Form1.cs, as well
