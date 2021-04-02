@@ -30,5 +30,9 @@ namespace RogersErwin_Assign5
             CellPanel.BackColor = Color.FromArgb(173, 220, 255);
             CellTextBox.BackColor = Color.FromArgb(173, 220, 255);
         }
+
+        public int Value { get { return Convert.ToInt32(CellTextBox.Text); } }
     }
+
+
 }

@@ -121,6 +121,7 @@ namespace RogersErwin_Assign5
             game = new Game(stage, ref GamePanelUserBoard, ref GameTextStage, ref GameTextTime, ref GameButtonPause, ref GameButtonProgress);
             GameButtonSave.Click += game.SaveState;
             GameButtonHint.Click += game.AttemptCheat;
+            GameButtonSolve.Click += game.AttemptSolve;
             game.save_finished += DisposeCurrentGame;
             SetGameVisibility(true);
             SetMainMenuVisibility(false);
@@ -131,6 +132,7 @@ namespace RogersErwin_Assign5
             game.DisposeGame();
             GameButtonSave.Click -= game.SaveState;
             GameButtonHint.Click -= game.AttemptCheat;
+            GameButtonSolve.Click -= game.AttemptSolve;
             game.save_finished -= DisposeCurrentGame;
             SetGameVisibility(false);
             SetMainMenuVisibility(true);

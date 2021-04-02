@@ -41,7 +41,7 @@ namespace RogersErwin_Assign5
         public Stopwatch gameSW = new Stopwatch();
         public System.Timers.Timer swRenderTimer;
         public long trueTime = 0;
-        
+
 
         private int gameSize;
         private string stageName;
@@ -142,10 +142,17 @@ namespace RogersErwin_Assign5
         {
             PauseGame();
             DialogResult opt = MessageBox.Show("Are you sure you want to save and quit?", "Save & Quit", MessageBoxButtons.YesNo);
-            if (opt != DialogResult.Yes) {
+            if (opt != DialogResult.Yes)
+            {
                 ResumeGame();
                 return;
             }
+            SaveStateNoPrompt();
+            save_finished();
+        }
+
+        public void SaveStateNoPrompt()
+        {
             // Pack the 2D boardCells array into a 1D-Representation of the sudoku board (Json-friendly).
             List<int> values = new List<int>();
             foreach (BoardCell cell in boardCells)
@@ -166,8 +173,6 @@ namespace RogersErwin_Assign5
             {
                 saveFile.Write(jsonString);
             }
-
-            save_finished();
         }
 
         /*
@@ -211,124 +216,50 @@ namespace RogersErwin_Assign5
             gameButtonPause.Text = "Pause";
             PauseOrResumeGame(gameButtonPause, null);
         }
-        
+
         public void AttemptCheat(object sender, EventArgs e)
         {
+            PauseGame();
             if (!hasCheated)
             {
                 DialogResult opt = MessageBox.Show("Are you sure you want to cheat?\nDoing so will invalidate the score on this attempt!", "Cheat Warning", MessageBoxButtons.YesNo);
                 if (opt != DialogResult.Yes)
                 {
+                    ResumeGame();
                     return;
-                } else
+                }
+                else
                 {
                     hasCheated = true;
                 }
             }
 
+            ResumeGame();
             Cheat();
         }
 
-        private void PauseOrResumeGame(object sender, EventArgs e)
+        public void AttemptSolve(object sender, EventArgs e)
         {
-            Button button = sender as Button;
-
-            if (button.Text.Equals("Pause"))
-            {
-                // pause timer
-                gameSW.Stop();
-                SetGamePanelUserBoardVisibility(false);
-                button.Text = "Resume";
-            }
-            else
-            {
-                // resume timer
-                gameSW.Start();
-                SetGamePanelUserBoardVisibility(true);
-                button.Text = "Pause";
-            }
-        }
-
-        private void RenderTimer(object sender, ElapsedEventArgs e)
-        {
-            if (hasCheated)
-            {
-                gameTextTime.Text = "INVALID...";
-                return;
-            }
-            trueTime = millisecondsElapsed + gameSW.ElapsedMilliseconds;
-            long milliseconds = trueTime % 1000;
-            long seconds = (trueTime / 1000) % 60;
-            long minutes = (trueTime / 60000);
-
-            if (minutes >= 100)
-            {
-                gameTextTime.Text = "SLOW BOI...";
-            }
-            else
-            {
-                gameTextTime.Text = String.Format("{0:00}:{1:00}.{2:000}", minutes, seconds, milliseconds);
-            }
-
-        }
-
-        private void Cheat()
-        {
-            int counter = 0;
-            List<BoardCell> unfilledCell = new List<BoardCell>();
-            foreach (BoardCell cell in boardCells)
-            {
-                if (cell.Value == 0)
-                {
-                    unfilledCell.Add(cell);
-                }
-            }
-
-            if (unfilledCell.Count != 0)
-            {
-                Random random = new Random();
-                int rdm = random.Next(0, unfilledCell.Count);
-                
-                BoardCell rdmCell = unfilledCell[rdm];
-                int solutionPos = (rdmCell.Row * gameSize) + rdmCell.Column;
-
-                rdmCell.Value = solutionValues[solutionPos];
-                UpdateSums(rdmCell.Row, rdmCell.Column);
-                return;
-            }
-
+            bool checkSolve = true;
             for (int i = 0; i < gameSize; i++)
             {
-                for (int j = 0; j < gameSize; j++)
-                {
-                    BoardCell currentCell = boardCells[i,j];
-                    if (currentCell.Value != solutionValues[counter])
-                    {
-                        currentCell.Value = solutionValues[counter];
-                        UpdateSums(i,j);
-                        return;
-                    }
-                    counter++;
-                }
+                if (rowSumCells[i].Value != correctRowSums[i]) { checkSolve = false; }
+                if (columnSumCells[i].Value != correctColumnSums[i]) { checkSolve = false; }
             }
+            if (diagonalSumCell.Value != correctDiagonalSum) { checkSolve = false; }
 
+            if (checkSolve)
+            {
+                Win();
+            }
+            else
+            {
+                PauseGame();
+                MessageBox.Show("Looks like you've still got more work to do!");
+                ResumeGame();
+            }
         }
-
-        private void TimerInitializer()
-        {
-            gameSW.Start();
-            swRenderTimer = new System.Timers.Timer(10);
-            swRenderTimer.AutoReset = true;
-            swRenderTimer.Elapsed += RenderTimer; //RenderTimer signiture needs to be modified to work with .Elapsed delegate
-            swRenderTimer.Start();
-        }
-
-        private void SetGamePanelUserBoardVisibility(bool state)
-        {
-            gameBoard.Enabled = state;
-            gameBoard.Visible = state;
-        }
-
+        
         /*
          * Called by the 'Progress' button, this will either display a visual
          * of how many cells need to be filled in still (if all cell the player has
@@ -360,12 +291,159 @@ namespace RogersErwin_Assign5
 
             if (remainingCells == 0)
             {
+                PauseGame();
                 MessageBox.Show("You've completed the puzzle, hit the 'solve' button!");
+                ResumeGame();
             }
             else
             {
+                PauseGame();
                 MessageBox.Show("No mistakes found, " + remainingCells + " cells left to fill.");
+                ResumeGame();
             }
+        }
+
+        private void Win()
+        {
+            gameSW.Stop();
+            completed = true;
+            SaveStateNoPrompt();
+            string difficultyPrefix = stageName[0].ToString();
+            
+            if (hasCheated)
+            {
+                MessageBox.Show(String.Format("You solved puzzle {0}!\nHowever, you cheated, so this score is invalidated!",stageName));
+            } else
+            {
+                List<long> times = StageManager.GetTimesFromSavesByDifficulty(difficultyPrefix);
+
+                long averageTime = 0;
+                long shortestTime = trueTime;
+                long sum = 0;
+                foreach (long time in times)
+                {
+                    shortestTime = Math.Min(time, shortestTime);
+                    sum += time;
+                }
+                averageTime = sum / times.Count;
+
+                string averageTimeStr = FormatMillisecondTime(averageTime);
+                string shortestTimeStr = FormatMillisecondTime(shortestTime);
+
+                MessageBox.Show(String.Format(
+                    "You solved puzzle {0}!\n--==Statistics for completions in this difficulty==--\nShortest Time: {1}\nAverage Time: {2}\nGames Completed (Without cheating): {3} / 3",
+                    stageName, shortestTimeStr, averageTimeStr, times.Count)
+                );
+            }
+           
+            save_finished();
+        }
+
+        private void PauseOrResumeGame(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+
+            if (button.Text.Equals("Pause"))
+            {
+                // pause timer
+                gameSW.Stop();
+                SetGamePanelUserBoardVisibility(false);
+                button.Text = "Resume";
+            }
+            else
+            {
+                // resume timer
+                gameSW.Start();
+                SetGamePanelUserBoardVisibility(true);
+                button.Text = "Pause";
+            }
+        }
+
+        private void RenderTimer(object sender, ElapsedEventArgs e)
+        {
+            if (hasCheated)
+            {
+                gameTextTime.Text = "INVALID...";
+                return;
+            }
+            trueTime = millisecondsElapsed + gameSW.ElapsedMilliseconds;
+            string timeString = FormatMillisecondTime(trueTime);
+
+            if (trueTime/60000 > 100)
+            {
+                gameTextTime.Text = "SLOW BOI...";
+            }
+            else
+            {
+                gameTextTime.Text = timeString;
+            }
+
+        }
+
+        private void Cheat()
+        {
+            int counter = 0;
+            List<BoardCell> unfilledCell = new List<BoardCell>();
+            foreach (BoardCell cell in boardCells)
+            {
+                if (cell.Value == 0)
+                {
+                    unfilledCell.Add(cell);
+                }
+            }
+
+            if (unfilledCell.Count != 0)
+            {
+                Random random = new Random();
+                int rdm = random.Next(0, unfilledCell.Count);
+
+                BoardCell rdmCell = unfilledCell[rdm];
+                int solutionPos = (rdmCell.Row * gameSize) + rdmCell.Column;
+
+                rdmCell.Value = solutionValues[solutionPos];
+                UpdateSums(rdmCell.Row, rdmCell.Column);
+                return;
+            }
+
+            for (int i = 0; i < gameSize; i++)
+            {
+                for (int j = 0; j < gameSize; j++)
+                {
+                    BoardCell currentCell = boardCells[i, j];
+                    if (currentCell.Value != solutionValues[counter])
+                    {
+                        currentCell.Value = solutionValues[counter];
+                        UpdateSums(i, j);
+                        return;
+                    }
+                    counter++;
+                }
+            }
+
+        }
+
+        private void TimerInitializer()
+        {
+            gameSW.Start();
+            swRenderTimer = new System.Timers.Timer(10);
+            swRenderTimer.AutoReset = true;
+            swRenderTimer.Elapsed += RenderTimer; //RenderTimer signiture needs to be modified to work with .Elapsed delegate
+            swRenderTimer.Start();
+        }
+
+        private void SetGamePanelUserBoardVisibility(bool state)
+        {
+            gameBoard.Enabled = state;
+            gameBoard.Visible = state;
+        }
+
+        private string FormatMillisecondTime(long ms)
+        {
+            long milliseconds = ms % 1000;
+            long seconds = (ms / 1000) % 60;
+            long minutes = (ms / 60000);
+
+            return String.Format("{0:#0}:{1:00}.{2:000}", minutes, seconds, milliseconds);
         }
 
         /*
@@ -430,6 +508,10 @@ namespace RogersErwin_Assign5
 
             foreach (BoardCell cell in flashedCells)        // For every flashedCell...
             {
+                if (cell.Selected)
+                {
+                    continue;
+                }
                 if (!cell.Locked)                           // If it isn't locked, Interpolate it's color back to defaultColor
                 {
                     cell.CellTextBox.BackColor = ColorLerp(flashColor, defaultColor, interpolationValue);

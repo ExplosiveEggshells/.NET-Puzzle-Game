@@ -22,6 +22,7 @@ namespace RogersErwin_Assign5
         private int row;            // Row this cell lies in.
         private int column;         // Column this cell lies in.
         private bool locked;        // Can this cell's value be changed by the player?
+        private bool selected = false;
 
         public delegate void BoardCell_ValueChanged(int row, int column);
         public BoardCell_ValueChanged Value_Changed;    // Delegate-action indicating that this Cell's value has changed.
@@ -35,6 +36,20 @@ namespace RogersErwin_Assign5
             textBox.Font = new Font("Courier New", panel.Height, FontStyle.Bold, GraphicsUnit.Pixel);
 
             textBox.KeyPress += TextBox_KeyPress;
+            textBox.GotFocus += TextBox_GotFocus;
+            textBox.LostFocus += TextBox_LostFocus;
+        }
+
+        private void TextBox_LostFocus(object sender, EventArgs e)
+        {
+            selected = false;
+            textBox.BackColor = Color.NavajoWhite;
+        }
+
+        private void TextBox_GotFocus(object sender, EventArgs e)
+        {
+            selected = true;
+            textBox.BackColor = Color.Goldenrod;
         }
 
         /*
@@ -64,6 +79,6 @@ namespace RogersErwin_Assign5
             }
         }
         public bool Locked { get { return locked; } set { locked = value; } }
-
+        public bool Selected { get { return selected; } }
     }
 }

@@ -196,5 +196,33 @@ namespace RogersErwin_Assign5
 
             return null;
         }
+
+        public static List<long> GetTimesFromSavesByDifficulty(string difficultyPrefix)
+        {
+            List<long> times = new List<long>();
+            List<string> filePaths = new List<string>();
+            for(int i = 1; i <= 3; i++)
+            {
+                string path = String.Format("../../saves/{0}{1}.json", difficultyPrefix, i);
+                if (File.Exists(path)) { 
+                    filePaths.Add(path);
+                }
+            }
+
+
+            foreach (string path in filePaths)
+            {
+                using (StreamReader reader = new StreamReader(path))
+                {
+                    Stage stage = JsonSerializer.Deserialize<Stage>(reader.ReadToEnd());
+                    if (stage.completed && !stage.hasCheated)
+                    {
+                        times.Add(stage.millisecondsElapsed);
+                    }
+                }
+            }
+
+            return times;
+        }
     }
 }
