@@ -47,6 +47,10 @@
             this.GamePanelMaster = new System.Windows.Forms.Panel();
             this.GamePauseTextBox = new System.Windows.Forms.TextBox();
             this.MenuPanelMaster = new System.Windows.Forms.Panel();
+            this.eClearData = new System.Windows.Forms.Button();
+            this.mClearData = new System.Windows.Forms.Button();
+            this.hClearData = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.MenuStartPanel.SuspendLayout();
             this.MenuTitlePanel.SuspendLayout();
             this.GamePanelDashboard.SuspendLayout();
@@ -58,8 +62,12 @@
             // 
             this.MenuStartPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.MenuStartPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MenuStartPanel.Controls.Add(this.textBox1);
             this.MenuStartPanel.Controls.Add(this.MediumDifficultyButton);
             this.MenuStartPanel.Controls.Add(this.HardDifficultyButton);
+            this.MenuStartPanel.Controls.Add(this.hClearData);
+            this.MenuStartPanel.Controls.Add(this.mClearData);
+            this.MenuStartPanel.Controls.Add(this.eClearData);
             this.MenuStartPanel.Controls.Add(this.EasyDifficultyButton);
             this.MenuStartPanel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.MenuStartPanel.Location = new System.Drawing.Point(40, 223);
@@ -70,9 +78,9 @@
             // MediumDifficultyButton
             // 
             this.MediumDifficultyButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MediumDifficultyButton.Location = new System.Drawing.Point(288, 70);
+            this.MediumDifficultyButton.Location = new System.Drawing.Point(262, 190);
             this.MediumDifficultyButton.Name = "MediumDifficultyButton";
-            this.MediumDifficultyButton.Size = new System.Drawing.Size(125, 40);
+            this.MediumDifficultyButton.Size = new System.Drawing.Size(180, 40);
             this.MediumDifficultyButton.TabIndex = 3;
             this.MediumDifficultyButton.Text = "Medium";
             this.MediumDifficultyButton.UseVisualStyleBackColor = true;
@@ -81,9 +89,9 @@
             // HardDifficultyButton
             // 
             this.HardDifficultyButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HardDifficultyButton.Location = new System.Drawing.Point(491, 70);
+            this.HardDifficultyButton.Location = new System.Drawing.Point(465, 190);
             this.HardDifficultyButton.Name = "HardDifficultyButton";
-            this.HardDifficultyButton.Size = new System.Drawing.Size(116, 40);
+            this.HardDifficultyButton.Size = new System.Drawing.Size(180, 40);
             this.HardDifficultyButton.TabIndex = 2;
             this.HardDifficultyButton.Text = "Hard";
             this.HardDifficultyButton.UseVisualStyleBackColor = true;
@@ -92,9 +100,9 @@
             // EasyDifficultyButton
             // 
             this.EasyDifficultyButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.EasyDifficultyButton.Location = new System.Drawing.Point(84, 70);
+            this.EasyDifficultyButton.Location = new System.Drawing.Point(58, 190);
             this.EasyDifficultyButton.Name = "EasyDifficultyButton";
-            this.EasyDifficultyButton.Size = new System.Drawing.Size(125, 40);
+            this.EasyDifficultyButton.Size = new System.Drawing.Size(180, 40);
             this.EasyDifficultyButton.TabIndex = 1;
             this.EasyDifficultyButton.Text = "Easy";
             this.EasyDifficultyButton.UseVisualStyleBackColor = true;
@@ -277,18 +285,74 @@
             this.MenuPanelMaster.Size = new System.Drawing.Size(785, 765);
             this.MenuPanelMaster.TabIndex = 2;
             // 
+            // eClearData
+            // 
+            this.eClearData.BackColor = System.Drawing.Color.Maroon;
+            this.eClearData.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.eClearData.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.eClearData.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.eClearData.Location = new System.Drawing.Point(78, 237);
+            this.eClearData.Name = "eClearData";
+            this.eClearData.Size = new System.Drawing.Size(144, 40);
+            this.eClearData.TabIndex = 1;
+            this.eClearData.Text = "CLEAR DATA";
+            this.eClearData.UseVisualStyleBackColor = false;
+            this.eClearData.Click += new System.EventHandler(this.ClearDataButton_Click);
+            // 
+            // mClearData
+            // 
+            this.mClearData.BackColor = System.Drawing.Color.Maroon;
+            this.mClearData.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.mClearData.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mClearData.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.mClearData.Location = new System.Drawing.Point(283, 236);
+            this.mClearData.Name = "mClearData";
+            this.mClearData.Size = new System.Drawing.Size(144, 40);
+            this.mClearData.TabIndex = 1;
+            this.mClearData.Text = "CLEAR DATA";
+            this.mClearData.UseVisualStyleBackColor = false;
+            this.mClearData.Click += new System.EventHandler(this.ClearDataButton_Click);
+            // 
+            // hClearData
+            // 
+            this.hClearData.BackColor = System.Drawing.Color.Maroon;
+            this.hClearData.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.hClearData.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hClearData.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.hClearData.Location = new System.Drawing.Point(483, 237);
+            this.hClearData.Name = "hClearData";
+            this.hClearData.Size = new System.Drawing.Size(144, 40);
+            this.hClearData.TabIndex = 1;
+            this.hClearData.Text = "CLEAR DATA";
+            this.hClearData.UseVisualStyleBackColor = false;
+            this.hClearData.Click += new System.EventHandler(this.ClearDataButton_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Font = new System.Drawing.Font("Cambria", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.ForeColor = System.Drawing.SystemColors.Menu;
+            this.textBox1.Location = new System.Drawing.Point(58, 70);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(587, 76);
+            this.textBox1.TabIndex = 4;
+            this.textBox1.Text = "Choose Difficulty Set";
+            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(784, 761);
-            this.Controls.Add(this.GamePanelMaster);
             this.Controls.Add(this.MenuPanelMaster);
+            this.Controls.Add(this.GamePanelMaster);
             this.ForeColor = System.Drawing.SystemColors.Control;
             this.Name = "Form1";
             this.Text = ".NET Sudoku";
             this.MenuStartPanel.ResumeLayout(false);
+            this.MenuStartPanel.PerformLayout();
             this.MenuTitlePanel.ResumeLayout(false);
             this.MenuTitlePanel.PerformLayout();
             this.GamePanelDashboard.ResumeLayout(false);
@@ -321,6 +385,10 @@
         private System.Windows.Forms.Button HardDifficultyButton;
         private System.Windows.Forms.TextBox GamePauseTextBox;
         private System.Windows.Forms.Button GameButtonProgress;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button hClearData;
+        private System.Windows.Forms.Button mClearData;
+        private System.Windows.Forms.Button eClearData;
     }
 }
 

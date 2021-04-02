@@ -71,7 +71,7 @@ namespace RogersErwin_Assign5
             }
             else
             {
-                MessageBox.Show("You've completed every stage in this difficulty!");
+                MessageBox.Show("You've completed every stage in this difficulty!\nUse 'Clear Data' on that set to start again!");
             }
         }
 
@@ -151,6 +151,21 @@ namespace RogersErwin_Assign5
             game.save_finished -= DisposeCurrentGame;
             SetGameVisibility(false);
             SetMainMenuVisibility(true);
+        }
+
+        private void ClearDataButton_Click(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn == null) { return; }
+
+            DialogResult opt = MessageBox.Show("Are you sure you want to delete all game saves for this difficulty?", "WARNING", MessageBoxButtons.YesNo);
+            if (opt == DialogResult.Yes)
+            {
+                string difficultyPrefix = btn.Name[0].ToString();
+                int deletionCount = stageManager.DeleteSavesByDifficulty(difficultyPrefix);
+
+                MessageBox.Show("Deleted " + deletionCount + " saves.");
+            }
         }
 
         private void GameButtonReset_Click(object sender, EventArgs e)

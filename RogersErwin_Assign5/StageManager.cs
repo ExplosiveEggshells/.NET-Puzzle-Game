@@ -229,5 +229,21 @@ namespace RogersErwin_Assign5
 
             return times;
         }
+
+        public int DeleteSavesByDifficulty(string difficultyPrefix)
+        {
+            int count = 0;
+            for (int i = 1; i <= 3; i++)
+            {
+                string path = String.Format("../../saves/{0}{1}.json", difficultyPrefix, i);
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                    count++;
+                }
+            }
+
+            return count;
+        }
     }
 }
