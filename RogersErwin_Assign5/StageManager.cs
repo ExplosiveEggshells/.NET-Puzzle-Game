@@ -197,6 +197,11 @@ namespace RogersErwin_Assign5
             return null;
         }
 
+        /*
+         * Returns a list of completion times for all games in a given difficulty
+         * (denoted by 'difficultyPrefix' either being 'e', 'm', or 'h'), provided
+         * that those saved games are indeed completed are were not cheated in.
+         */
         public static List<long> GetTimesFromSavesByDifficulty(string difficultyPrefix)
         {
             List<long> times = new List<long>();

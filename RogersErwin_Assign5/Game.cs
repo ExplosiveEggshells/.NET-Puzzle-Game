@@ -35,30 +35,27 @@ namespace RogersErwin_Assign5
         private List<int> correctRowSums;
         private List<int> correctColumnSums;
         private int correctDiagonalSum;
-
-        public delegate void Save_Finished();
-        public Save_Finished save_finished;
-        public Stopwatch gameSW = new Stopwatch();
-        public System.Timers.Timer swRenderTimer;
-        public long trueTime = 0;
-
-
-        private int gameSize;
         private string stageName;
+        private int gameSize;
         private long millisecondsElapsed;
-
         private bool completed;
         private bool hasCheated;
 
-        private Color flashColor = Color.Red;
-        private Color defaultColor = Color.NavajoWhite;
-        private Color lockedColor = Color.White;
+        public delegate void Save_Finished();
+        public Save_Finished save_finished;         // Delegate to indicate that the game has finished saving, such that it can safely be disposed now.
+        public Stopwatch gameSW = new Stopwatch();  // Keeps track of time elapsed for scoring.
+        public System.Timers.Timer swRenderTimer;   // Updates the time elapsed every few milliseconds.
+        public long trueTime = 0;                   // Amount of time this SINGLE playtime has lasted + duration of ALL saved playtimes on this board.
 
-        private System.Timers.Timer flashInterpolationTimer;
-        private List<BoardCell> flashedCells;
-        private int flashMaxTicks = 33;
-        private int flashTickCount = 0;
-        private double flashDuration = 1500;
+        private Color flashColor = Color.Red;           // The color that board cells change to when flashed.
+        private Color defaultColor = Color.NavajoWhite; // The color that board cells should be under no unique circumstances.
+        private Color lockedColor = Color.White;        // The color that locked board cells should be.
+
+        private System.Timers.Timer flashInterpolationTimer;    // Timer for stepping through frames of the flash animation
+        private List<BoardCell> flashedCells;                   // Cached set of cells that are currently doing the flash animation
+        private int flashMaxTicks = 33;                         // Maximum number of interpolation steps in the flash animation
+        private int flashTickCount = 0;                         // Current amount of steps performed in the last flash.
+        private double flashDuration = 1500;                    // Length in ms of the flash animation.
 
         // References to UI controls.
         private Button gameButtonProgress;
@@ -151,6 +148,10 @@ namespace RogersErwin_Assign5
             save_finished();
         }
 
+        /*
+         * Saves the game, but skipping past the prompt to save
+         * & exit as well as not exiting when finished.
+         */
         public void SaveStateNoPrompt()
         {
             // Pack the 2D boardCells array into a 1D-Representation of the sudoku board (Json-friendly).
@@ -176,7 +177,6 @@ namespace RogersErwin_Assign5
         }
 
         /*
-<<<<<<< HEAD
          * Disposes all control elements associated to this
          * game instance
          */
@@ -205,18 +205,32 @@ namespace RogersErwin_Assign5
             diagonalSumCell.Dispose();
         }
 
+        /*
+         * Resumes the timer and displays the gameBoard
+         * once again.
+         */
         public void ResumeGame()
         {
             gameButtonPause.Text = "Resume";
             PauseOrResumeGame(gameButtonPause, null);
         }
 
+        /*
+         * Halts the timer and hides the gameBoard.
+         */
         public void PauseGame()
         {
             gameButtonPause.Text = "Pause";
             PauseOrResumeGame(gameButtonPause, null);
         }
 
+        /*
+         * Will attempt to call Cheat(). If the user has not yet cheated on this board,
+         * a confirmation dialog will pop up asking if they wish to invalidate this attempt.
+         * 
+         * Once the user has cheated once, this method will simply immediately divert to
+         * Cheat().
+         */
         public void AttemptCheat(object sender, EventArgs e)
         {
             PauseGame();
@@ -237,7 +251,11 @@ namespace RogersErwin_Assign5
             ResumeGame();
             Cheat();
         }
-
+      
+        /*
+         * Will call Win() if all of the sums are correct, otherwise,
+         * print a message stating that the game is not yet correct.
+         */
         public void AttemptSolve(object sender, EventArgs e)
         {
             bool checkSolve = true;
@@ -259,7 +277,7 @@ namespace RogersErwin_Assign5
                 ResumeGame();
             }
         }
-        
+
         /*
          * Called by the 'Progress' button, this will either display a visual
          * of how many cells need to be filled in still (if all cell the player has
@@ -303,17 +321,21 @@ namespace RogersErwin_Assign5
             }
         }
 
+        /*
+         * Stop the timer, save the game as completed, then display a results box and exit out of this board.
+         */
         private void Win()
         {
             gameSW.Stop();
             completed = true;
             SaveStateNoPrompt();
             string difficultyPrefix = stageName[0].ToString();
-            
+
             if (hasCheated)
             {
-                MessageBox.Show(String.Format("You solved puzzle {0}!\nHowever, you cheated, so this score is invalidated!",stageName));
-            } else
+                MessageBox.Show(String.Format("You solved puzzle {0}!\nHowever, you cheated, so this score is invalidated!", stageName));
+            }
+            else
             {
                 List<long> times = StageManager.GetTimesFromSavesByDifficulty(difficultyPrefix);
 
@@ -335,10 +357,17 @@ namespace RogersErwin_Assign5
                     stageName, shortestTimeStr, averageTimeStr, times.Count)
                 );
             }
-           
+
             save_finished();
         }
 
+        /*
+         * Either pause or resume the game, toggling between the two states
+         * 
+         * Note: Paused state is dictated by the text on the GameButtonPaused,
+         * where its text being 'pause' means the game is in motion and 'resume'
+         * means the game is paused.
+         */
         private void PauseOrResumeGame(object sender, EventArgs e)
         {
             Button button = sender as Button;
@@ -359,9 +388,14 @@ namespace RogersErwin_Assign5
             }
         }
 
+        /*
+         * Fills the TextBox representing the game time according to how
+         * many milliseconds have elapsed during this game, or other extraneous
+         * texts.
+         */
         private void RenderTimer(object sender, ElapsedEventArgs e)
         {
-            if (hasCheated)
+            if (hasCheated)     // If the player has cheated in this board, print text to say so and do nothing else.
             {
                 gameTextTime.Text = "INVALID...";
                 return;
@@ -369,22 +403,28 @@ namespace RogersErwin_Assign5
             trueTime = millisecondsElapsed + gameSW.ElapsedMilliseconds;
             string timeString = FormatMillisecondTime(trueTime);
 
-            if (trueTime/60000 > 100)
-            {
-                gameTextTime.Text = "SLOW BOI...";
-            }
-            else
-            {
-                gameTextTime.Text = timeString;
-            }
+            gameTextTime.Text = timeString;
 
         }
 
+        /*
+         * 'Cheat' by doing one of two things:
+         * 
+         *      1) Pick a random, unfilled cell (cell with a value
+         *      of '0') and fill it in with the correct value.
+         *      
+         *      2) Pick the first incorrectly filled in cell (ordered
+         *      by row THEN column) and replace its value with the
+         *      correct one.
+         *  
+         * Option 1 is preferred, but unavailable if the user has
+         * already tried to 
+         */
         private void Cheat()
         {
             int counter = 0;
             List<BoardCell> unfilledCell = new List<BoardCell>();
-            foreach (BoardCell cell in boardCells)
+            foreach (BoardCell cell in boardCells)                  // Keep track of every cell which is unfilled.
             {
                 if (cell.Value == 0)
                 {
@@ -392,7 +432,7 @@ namespace RogersErwin_Assign5
                 }
             }
 
-            if (unfilledCell.Count != 0)
+            if (unfilledCell.Count != 0)                            // If there are unfilled cells, pick one random one and fill it in with the correct value.
             {
                 Random random = new Random();
                 int rdm = random.Next(0, unfilledCell.Count);
@@ -405,7 +445,7 @@ namespace RogersErwin_Assign5
                 return;
             }
 
-            for (int i = 0; i < gameSize; i++)
+            for (int i = 0; i < gameSize; i++)                      // Find the first incorrect cell and replace its value with the correct one.
             {
                 for (int j = 0; j < gameSize; j++)
                 {
@@ -422,28 +462,39 @@ namespace RogersErwin_Assign5
 
         }
 
+        /*
+         * Initializes multiple properties of the game Timer.
+         */
         private void TimerInitializer()
         {
             gameSW.Start();
             swRenderTimer = new System.Timers.Timer(10);
             swRenderTimer.AutoReset = true;
-            swRenderTimer.Elapsed += RenderTimer; //RenderTimer signiture needs to be modified to work with .Elapsed delegate
+            swRenderTimer.Elapsed += RenderTimer;
             swRenderTimer.Start();
         }
 
+        /*
+         * Sets the visibility & active status of the gameBoard to
+         * 'state'
+         */
         private void SetGamePanelUserBoardVisibility(bool state)
         {
             gameBoard.Enabled = state;
             gameBoard.Visible = state;
         }
 
+        /*
+         * Formats a long representing a time in milliseconds into
+         * a string in #M#M:SS.ssss format.
+         */
         private string FormatMillisecondTime(long ms)
         {
             long milliseconds = ms % 1000;
             long seconds = (ms / 1000) % 60;
             long minutes = (ms / 60000);
 
-            return String.Format("{0:#0}:{1:00}.{2:000}", minutes, seconds, milliseconds);
+            return String.Format("{0:0}:{1:00}.{2:000}", minutes, seconds, milliseconds);
         }
 
         /*

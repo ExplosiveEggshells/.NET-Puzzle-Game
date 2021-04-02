@@ -75,12 +75,17 @@ namespace RogersErwin_Assign5
             }
         }
 
+        /*
+         * 'Resets' the current game by disposing of the current game
+         * instance, deletng any save files for it, and reloading the
+         * default board for that stage.
+         */
         private void ResetGame()
         {
             if (game == null) { return; }
 
             game.PauseGame();
-            DialogResult opt = MessageBox.Show("Would you like to reset the game?\nThis will delete any saved games for this difficulty.", "", MessageBoxButtons.YesNo);
+            DialogResult opt = MessageBox.Show("Would you like to reset the board?\nThis will delete any saves for this board.", "", MessageBoxButtons.YesNo);
 
             if (opt == DialogResult.Yes)
             {
@@ -116,6 +121,11 @@ namespace RogersErwin_Assign5
             }
         }
 
+        /*
+         * Creates a new Game instance loaded to 'stage' and
+         * registers various control elements to it, then shows the game
+         * menu.
+         */
         private void StartNextGame(Stage stage)
         {
             game = new Game(stage, ref GamePanelUserBoard, ref GameTextStage, ref GameTextTime, ref GameButtonPause, ref GameButtonProgress);
@@ -127,6 +137,11 @@ namespace RogersErwin_Assign5
             SetMainMenuVisibility(false);
         }
 
+        /*
+         * Disposes all control elements in the currently loaded
+         * game instance and de-registers all events hooked to it,
+         * then hides the game menu.
+         */
         private void DisposeCurrentGame()
         {
             game.DisposeGame();

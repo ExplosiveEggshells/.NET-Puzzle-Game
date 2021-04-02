@@ -39,10 +39,10 @@ namespace RogersErwin_Assign5
         public List<int> correctColumnSums { get; set; }    // Same, but for above going from left to right.
         public int correctDiagonalSum { get; set; }         // Same, but only for the one diagonal sum.
 
-        public long millisecondsElapsed { get; set; }
+        public long millisecondsElapsed { get; set; }       // Amount of playtime elapsed during this game.
 
         public bool completed { get; set; }                 // True if this board is solved, or false if in progess.
-        public bool hasCheated { get; set; }
+        public bool hasCheated { get; set; }                // If the user has at all used the 'hint' functionality during this game, this is true.
 
         /*
          * Default, empty constructor, most likely should not be used.
